@@ -58,7 +58,7 @@ init_feld1 :-
 % Setzt das Spielfeld sowie die zugewiesenen einheiten zurück
 reset_game :-
 	retractall( feld(_,_,_) ),
-	retractall( enemy(_,_,_,_) ).
+	retractall( einheit_active(_,_,_,_) ).
 
 
 % Initialisiert die Einheiten für die jeweiligen Spieler
@@ -68,10 +68,10 @@ init_player(Player, Type1, Type2, Type3) :-
 	Xp1 is X + 1,
 	Yp1 is Y + 1,
 
-	% enemy(Player, Einheit Type, feldX, feldY)
-	assert( enemy(Player,Type1,Xp1,Yp1) ),
-	assert( enemy(Player,Type2,Xp1,Y  ) ),
-	assert( enemy(Player,Type3,X  ,Yp1) ),
+	% einheit_active(Player, Einheit Type, feldX, feldY)
+	assert( einheit_active(Player,Type1,Xp1,Yp1) ),
+	assert( einheit_active(Player,Type2,Xp1,Y  ) ),
+	assert( enemy_active(Player,Type3,X  ,Yp1) ),
 
 	% Berechnet die zustehenden Tokens pro Runde für den Spieler
 	einheit(Type1, _,_,_, Cost1),
