@@ -17,6 +17,9 @@ einheit(tank, 5, 5, 3, 3).
 playerStart(1, -1, -1).
 playerStart(2, 3, 3).
 
+% Die Anzahl an tokens die pro Runde an die Spieler verteilt wird
+player_tokens(10).
+
 
 % Erschafft ein festes Spielfeld
 init_feld1 :-
@@ -68,4 +71,13 @@ init_player(Player, Type1, Type2, Type3) :-
 	% enemy(Player, Einheit Type, feldX, feldY)
 	assert( enemy(Player,Type1,Xp1,Yp1) ),
 	assert( enemy(Player,Type2,Xp1,Y  ) ),
-	assert( enemy(Player,Type3,X  ,Yp1) ).
+	assert( enemy(Player,Type3,X  ,Yp1) ),
+
+	% Berechnet die zustehenden Tokens pro Runde für den Spieler
+	einheit(Type1, _,_,_, Cost1),
+	einheit(Type2, _,_,_, Cost2),
+	einheit(Type3, _,_,_, Cost3),
+	player_tokens(Tokens),
+	Cost is Tokens - (Cost1 + Cost2 + Cost3),
+
+	assert( player_tokens(Player, Cost) ).
