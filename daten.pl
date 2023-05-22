@@ -52,12 +52,20 @@ init_feld1 :-
 	assert( feld(4, 4, 1) ).
 
 
+% Setzt das Spielfeld sowie die zugewiesenen einheiten zurück
+reset_game :-
+	retractall( feld(_,_,_) ),
+	retractall( enemy(_,_,_,_) ).
+
+
 % Initialisiert die Einheiten für die jeweiligen Spieler
 init_player(Player, Type1, Type2, Type3) :-
+	% der shabang ist hier damit die einheiten jeweils in den ecken spawnen
 	playerStart(Player, X, Y),
-	% einheit(Player, Type, feldX, feldY)
 	Xp1 is X + 1,
 	Yp1 is Y + 1,
-	assert( einheit(Player,Type1,Xp1,Yp1) ),
-	assert( einheit(Player,Type2,Xp1,Y  ) ),
-	assert( einheit(Player,Type3,X  ,Yp1) ).
+
+	% enemy(Player, Einheit Type, feldX, feldY)
+	assert( enemy(Player,Type1,Xp1,Yp1) ),
+	assert( enemy(Player,Type2,Xp1,Y  ) ),
+	assert( enemy(Player,Type3,X  ,Yp1) ).
