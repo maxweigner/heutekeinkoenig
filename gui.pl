@@ -7,6 +7,7 @@ window(Name) :-
 	new(D, dialog(Name)),
 	send(D, append, button(init, message(@prolog, init_feld1))),
 	send(D, append, button(show, message(@prolog, window3, 'Spielfeld'))),
+	send(D, append, button(newbutton, message(@prolog, new_butt, D))),
 	send(D, open).
 
 
