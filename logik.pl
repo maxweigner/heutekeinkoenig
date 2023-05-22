@@ -19,7 +19,7 @@ player_turn(Player) :-
 
 % Bewegt die Einheit des Spielers an position Xold, Yold 
 % um Xmove, Ymove in die jeweilige Richtung
-move_einheit(Player, Xold, Yold, Xmove, Ymove) :-
+einheit_move(Player, Xold, Yold, Xmove, Ymove) :-
 	% Die Einheit entfernen
 	retract( einheit_active(Player, Type, Xold, Yold) ),
 
