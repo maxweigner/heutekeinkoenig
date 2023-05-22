@@ -19,18 +19,15 @@ player_turn(Player) :-
 
 % Bewegt die Einheit des Spielers an position Xold, Yold 
 % um Xmove, Ymove in die jeweilige Richtung
-einheit_move(Player, Xold, Yold, Xmove, Ymove) :-
+einheit_move(Player, Xold, Yold, Xnew, Ynew) :-
 	% Die Einheit entfernen
 	retract( einheit_active(Player, Type, Xold, Yold) ),
-
-	% Neue position berechnen
-	Xnew is Xold + Xmove,
-	Ynew is Yold + Ymove,
 
 	% Die Einheit an die neue Position setzen
 	assert( einheit_active(Player, Type, Xnew, Ynew) ),
 
 	% Errechnen der verbleibenden Tokens
 	retract( player_tokens(Player, Tokens) ),
-	TokensNew is Tokens - Xmove - Ymove,
+	% die berechnung muss noch mal angeschaut werden
+	TokensNew is Tokens - (Xold - Xnew) - (Xold - Ynew),
 	assert( player_tokens(Player, TokensNew) ).
