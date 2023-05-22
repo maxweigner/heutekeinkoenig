@@ -1,6 +1,5 @@
-% erstmal nur experimentell, der bums kommt zum schluss
-% falls noch zeit sein sollte jedenfalls
-
+:- use_module(library(tabular)).
+:- use_module(library(autowin)).
 
 % new(@specifier, dialog('windowname'))
 % send(@specifiert, append(text_item(name)))
@@ -9,6 +8,7 @@ window(Name) :-
 	send(D, append, button(init, message(@prolog, init_feld1))),
 	send(D, append, button(show, message(@prolog, window3, 'Spielfeld'))),
 	send(D, open).
+
 
 window2(Name) :-
 	new(D, dialog(Name)),
@@ -20,10 +20,6 @@ window2(Name) :-
 
 	send(D, open).
 
-
-% Specific für window3/1
-:- use_module(library(tabular)).
-:- use_module(library(autowin)).
 
 window3(Name) :-
 	new(P, auto_sized_picture(Name)),
