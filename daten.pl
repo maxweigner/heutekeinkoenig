@@ -58,20 +58,25 @@ init_feld1 :-
 % Setzt das Spielfeld sowie die zugewiesenen einheiten zurück
 reset_game :-
 	retractall( feld(_,_,_) ),
-	retractall( einheit_active(_,_,_,_) ).
+	retractall( einheit_active(_,_,_,_) ),
+	retractall( player_tokens(_,_) ).
 
 
 % Initialisiert die Einheiten für die jeweiligen Spieler
 init_player(Player, Type1, Type2, Type3) :-
-	% der shabang ist hier damit die einheiten jeweils in den ecken spawnen
+	% der shabang ist hier damit die einheiten jeweils in den 
+	% richtigen ecken spawnen
 	playerStart(Player, X, Y),
 	Xp1 is X + 1,
+	Xp2 is X + 2,
+
 	Yp1 is Y + 1,
+	Yp2 is Y + 2,
 
 	% einheit_active(Player, Einheit Type, feldX, feldY)
 	assert( einheit_active(Player,Type1,Xp1,Yp1) ),
-	assert( einheit_active(Player,Type2,Xp1,Y  ) ),
-	assert( enemy_active(Player,Type3,X  ,Yp1) ),
+	assert( einheit_active(Player,Type2,Xp2,Yp1) ),
+	assert( einheit_active(Player,Type3,Xp1,Yp2) ),
 
 	% Berechnet die zustehenden Tokens pro Runde für den Spieler
 	einheit(Type1, _,_,_, Cost1),
