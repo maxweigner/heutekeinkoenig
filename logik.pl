@@ -28,4 +28,9 @@ einheit_move(Player, Xold, Yold, Xmove, Ymove) :-
 	Ynew is Yold + Ymove,
 
 	% Die Einheit an die neue Position setzen
-	assert( einheit_active(Player, Type, Xnew, Ynew) ).
+	assert( einheit_active(Player, Type, Xnew, Ynew) ),
+
+	% Errechnen der verbleibenden Tokens
+	retract( player_tokens(Player, Tokens) ),
+	TokensNew is Tokens - Xmove - Ymove,
+	assert( player_tokens(Player, TokensNew) ).
