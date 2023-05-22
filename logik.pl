@@ -5,7 +5,7 @@
 player_turn(Player) :-
 
     % calculate action points
-    calc_action_points(Player, Turncounter)
+    calc_action_points(Player, Turncounter),
 
 
     % further logic
@@ -14,4 +14,18 @@ player_turn(Player) :-
 
 
     % save remaining ap
-    save_action_points(Player)
+    save_action_points(Player).
+
+
+% Bewegt die Einheit des Spielers an position Xold, Yold 
+% um Xmove, Ymove in die jeweilige Richtung
+move_einheit(Player, Xold, Yold, Xmove, Ymove) :-
+	% Die Einheit entfernen
+	retract( einheit_active(Player, Type, Xold, Yold) ),
+
+	% Neue position berechnen
+	Xnew is Xold + Xmove,
+	Ynew is Yold + Ymove,
+
+	% Die Einheit an die neue Position setzen
+	assert( einheit_active(Player, Type, Xnew, Ynew) ).
