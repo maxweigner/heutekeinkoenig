@@ -12,6 +12,6 @@ player_turn(Player) :-
 
 
 
-
+    % end of turn
     % save remaining ap
     save_action_points(Player)
