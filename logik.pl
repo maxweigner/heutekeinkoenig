@@ -13,8 +13,8 @@ change_player_to(Player) :-
 % je nach dem ob dieser gerade am Zug ist oder nicht
 inactive_player(Player) :-
 	current_player(Player1),
-	playerStart(Player1,_,_),
-	playerStart(Player,_,_),
+	player(Player1),
+	player(Player),
 	Player1 \= Player.
 
 % Das hier muss an jedem Rundenende ausgeführt werden um den
@@ -41,6 +41,18 @@ player_turn(Player) :-
     save_action_points(Player).
 
 
+% Gibt den Betrag der Zahl zurück
+betrag(Num1, Num2) :-
+	(
+		Num1 >= 0,
+		Num2 is Num1
+	), !
+	;
+	(
+		Num2 is -Num1
+	).
+
+
 % Bewegt die Einheit des aktuellen Spielers an position Xold, Yold 
 % auf position Xnew, Ynew
 einheit_move(Xold, Yold, Xnew, Ynew) :-
@@ -55,8 +67,13 @@ einheit_move(Xold, Yold, Xnew, Ynew) :-
 
 	% Errechnen der verbleibenden Tokens
 	retract( player_tokens(Player, Tokens) ),
-	% die berechnung muss noch mal angeschaut werden
-	TokensNew is Tokens - (Xold - Xnew) - (Xold - Ynew),
+
+	betrag(Xold - Xnew, Xmove),
+	betrag(Yold - Ynew, Ymove),
+
+	TokensNew is Tokens - Xmove - Ymove,
+	TokensNew >= 0,
+
 	assert( player_tokens(Player, TokensNew) ).
 
 
@@ -67,10 +84,12 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 	current_player(Player),
 	einheit_active(Player, TypeAttack, Xattack, Yattack, _),
 	einheit_active(PlayerDefend, TypeDefend, Xdefend, Ydefend, HP),
-	einheit(TypeAttack, AP, _,_,_),
+	einheit(TypeAttack, AP, _, _, _),
+	einheit(TypeDefend, _, _, Mult, _),
+	HPwithMult is HP * Mult,
 	(
 		(% Entweder die Einheit überlebt
-			einheit_alive(AP, HP, HPnew),
+			einheit_alive(AP, HPwithMult, HPnew),
 			retract( einheit_active(PlayerDefend, TypeDefend, 
 										Xdefend, Ydefend, HP) ),
 			assert( einheit_active(PlayerDefend, TypeDefend, 

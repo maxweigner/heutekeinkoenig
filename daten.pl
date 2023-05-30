@@ -15,8 +15,8 @@ einheit(tank, 5, 5, 3, 3).
 % Startpositionen der Spieler mit jeweils -1 auf die coords
 % Damit ist die init_player universell
 % playerStart(Player, X, Y)
-playerStart(1, -1, -1).
-playerStart(2, 3, 3).
+player(1).
+player(2).
 
 % Die Anzahl an tokens die pro Runde an die Spieler verteilt wird
 player_tokens(10).
@@ -64,29 +64,34 @@ reset_game :-
 
 
 % Initialisiert die Einheiten für die jeweiligen Spieler
-init_player(Player, Type1, Type2, Type3) :-
-	% der shabang ist hier damit die einheiten jeweils in den 
-	% richtigen ecken spawnen
-	playerStart(Player, X, Y),
-	Xp1 is X + 1,
-	Xp2 is X + 2,
-
-	Yp1 is Y + 1,
-	Yp2 is Y + 2,
-
+init_player1(Player, Type1, Type2, Type3) :-
 	% Berechnet die zustehenden Tokens pro Runde für den Spieler
 	einheit(Type1, _, Defense_Points1, _, Cost1),
 	einheit(Type2, _, Defense_Points2, _, Cost2),
 	einheit(Type3, _, Defense_Points3, _, Cost3),
+	
 	player_tokens(Tokens),
 	Cost is Tokens - (Cost1 + Cost2 + Cost3),
-
 	assert( player_tokens(Player, Cost) ),
 
 	% Definiert die aktiven einheiten der Spieler
 	% einheit_active(Player, Einheit Type, feldX, feldY)
-	assert( einheit_active(Player,Type1,Xp1,Yp1,Defense_Points1) ),
-	assert( einheit_active(Player,Type2,Xp2,Yp1,Defense_Points2) ),
-	assert( einheit_active(Player,Type3,Xp1,Yp2,Defense_Points3) ).
+	assert( einheit_active(Player,Type1,0,0,Defense_Points1) ),
+	assert( einheit_active(Player,Type2,0,1,Defense_Points2) ),
+	assert( einheit_active(Player,Type3,1,0,Defense_Points3) ).
 
+init_player2(Player, Type1, Type2, Type3) :-
+	% Berechnet die zustehenden Tokens pro Runde für den Spieler
+	einheit(Type1, _, Defense_Points1, _, Cost1),
+	einheit(Type2, _, Defense_Points2, _, Cost2),
+	einheit(Type3, _, Defense_Points3, _, Cost3),
 	
+	player_tokens(Tokens),
+	Cost is Tokens - (Cost1 + Cost2 + Cost3),
+	assert( player_tokens(Player, Cost) ),
+
+	% Definiert die aktiven einheiten der Spieler
+	% einheit_active(Player, Einheit Type, feldX, feldY)
+	assert( einheit_active(Player,Type1,4,4,Defense_Points1) ),
+	assert( einheit_active(Player,Type2,4,3,Defense_Points2) ),
+	assert( einheit_active(Player,Type3,3,4,Defense_Points3) ).
