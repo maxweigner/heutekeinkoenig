@@ -14,6 +14,7 @@ einheit(tank, 5, 5, 3, 3).
 
 % Startpositionen der Spieler mit jeweils -1 auf die coords
 % Damit ist die init_player universell
+% playerStart(Player, X, Y)
 playerStart(1, -1, -1).
 playerStart(2, 3, 3).
 
@@ -73,16 +74,19 @@ init_player(Player, Type1, Type2, Type3) :-
 	Yp1 is Y + 1,
 	Yp2 is Y + 2,
 
-	% einheit_active(Player, Einheit Type, feldX, feldY)
-	assert( einheit_active(Player,Type1,Xp1,Yp1) ),
-	assert( einheit_active(Player,Type2,Xp2,Yp1) ),
-	assert( einheit_active(Player,Type3,Xp1,Yp2) ),
-
 	% Berechnet die zustehenden Tokens pro Runde für den Spieler
-	einheit(Type1, _,_,_, Cost1),
-	einheit(Type2, _,_,_, Cost2),
-	einheit(Type3, _,_,_, Cost3),
+	einheit(Type1, _, Defense_Points1, _, Cost1),
+	einheit(Type2, _, Defense_Points2, _, Cost2),
+	einheit(Type3, _, Defense_Points3, _, Cost3),
 	player_tokens(Tokens),
 	Cost is Tokens - (Cost1 + Cost2 + Cost3),
 
-	assert( player_tokens(Player, Cost) ).
+	assert( player_tokens(Player, Cost) ),
+
+	% Definiert die aktiven einheiten der Spieler
+	% einheit_active(Player, Einheit Type, feldX, feldY)
+	assert( einheit_active(Player,Type1,Xp1,Yp1,Defense_Points1) ),
+	assert( einheit_active(Player,Type2,Xp2,Yp1,Defense_Points2) ),
+	assert( einheit_active(Player,Type3,Xp1,Yp2,Defense_Points3) ).
+
+	
