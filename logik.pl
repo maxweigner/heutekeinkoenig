@@ -113,3 +113,7 @@ einheit_alive(AP, HP, HPnew) :-
 % Entfernt eine Einheit vom Spielfeld an Position X, Y
 einheit_delete(X, Y) :-
 	retract( einheit_active(_, _, X, Y, _) ).
+
+get_color_of_fieldType(FieldTypeInt, Color) :- 
+	feldType(_, FieldTypeInt, Color).
+	

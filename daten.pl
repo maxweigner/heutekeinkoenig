@@ -1,5 +1,8 @@
 :- use_module(library(pce)).
 
+numCols(5).
+numRows(5).
+
 % Später für die Ausgabe des Types vom Terrain an den Nutzer
 feldType(grass, 1, green).
 feldType(mountain, 2, grey).
@@ -39,21 +42,21 @@ init_feld1 :-
 
 	assert( feld(2, 0, 1) ),
 	assert( feld(2, 1, 1) ),
-	assert( feld(2, 2, 1) ),
-	assert( feld(2, 3, 1) ),
+	assert( feld(2, 2, 3) ),
+	assert( feld(2, 3, 3) ),
 	assert( feld(2, 4, 1) ),
 
 	assert( feld(3, 0, 1) ),
 	assert( feld(3, 1, 1) ),
 	assert( feld(3, 2, 1) ),
-	assert( feld(3, 3, 1) ),
+	assert( feld(3, 3, 3) ),
 	assert( feld(3, 4, 1) ),
 
 	assert( feld(4, 0, 1) ),
 	assert( feld(4, 1, 1) ),
 	assert( feld(4, 2, 1) ),
 	assert( feld(4, 3, 1) ),
-	assert( feld(4, 4, 1) ).
+	assert( feld(4, 4, 3) ).
 
 
 % Setzt das Spielfeld sowie die zugewiesenen einheiten zurück

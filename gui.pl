@@ -8,10 +8,137 @@ window(Name) :-
 	send(D, append, button(init, message(@prolog, init_feld1))),
 	send(D, append, button(show3, message(@prolog, window3, 'Spielfeld'))),
 	send(D, append, button(show2, message(@prolog, window2, 'Spielfeld'))),
+	send(D, append, button(reset, message(@prolog, reset_game))),
 	send(D, open).
+
+window2(Name) :-
+
+	%T?for_all(message(@arg1?contents, equal, '1'), message(@arg1, background, red)), % Zelle 1: Rote Hintergrundfarbe
+   % T?for_all(message(@arg1?contents, equal, '2'), message(@arg1, background, green)), % Zelle 2: Grüne Hintergrundfarbe
+	
+    new(P, dialog(Name)),
+    send(P, size, size(800, 600)), % Fenstergröße festlegen
+	new(T, tabular),
+	send(T, table_width, 400),
+	send(T, border, 1),
+	send(T, cell_spacing, -1),
+	send(T, rules, all),
+	
+	feld(0, 0, A),
+	get_color_of_fieldType(A, Ac),
+	feld(0, 1, B),
+	get_color_of_fieldType(B, Bc),
+	feld(0, 2, C),
+	get_color_of_fieldType(C, Cc),
+	feld(0, 3, D),
+	get_color_of_fieldType(D, Dc),
+	feld(0, 4, E),
+	get_color_of_fieldType(E, Ec),
+	feld(1, 0, F),
+	get_color_of_fieldType(F, Fc),
+	feld(1, 1, G),
+	get_color_of_fieldType(G, Gc),
+	feld(1, 2, H),
+	get_color_of_fieldType(H, Hc),
+	feld(1, 3, I),
+	get_color_of_fieldType(I, Ic),
+	feld(1, 4, J),
+	get_color_of_fieldType(J, Jc),
+	feld(2, 0, K),
+	get_color_of_fieldType(K, Kc),
+	feld(2, 1, L),
+	get_color_of_fieldType(L, Lc),
+	feld(2, 2, M),
+	get_color_of_fieldType(M, Mc),
+	feld(2, 3, N),
+	get_color_of_fieldType(N, Nc),
+	feld(2, 4, O),
+	get_color_of_fieldType(O, Oc),
+	feld(3, 0, Px),
+	get_color_of_fieldType(Px, Pxc),
+	feld(3, 1, Q),
+	get_color_of_fieldType(Q, Qc),
+	feld(3, 2, R),
+	get_color_of_fieldType(R, Rc),
+	feld(3, 3, S),
+	get_color_of_fieldType(S, Sc),
+	feld(3, 4, Tx),
+	get_color_of_fieldType(Tx, Txc),
+	feld(4, 0, U),
+	get_color_of_fieldType(U, Uc),
+	feld(4, 1, V),
+	get_color_of_fieldType(V, Vc),
+	feld(4, 2, W),
+	get_color_of_fieldType(W, Wc),
+	feld(4, 3, X),
+	get_color_of_fieldType(X, Xc),
+	feld(4, 4, Y),
+	get_color_of_fieldType(Y, Yc),
+
+	send_list(T, 
+		[
+			append('', bold, center),
+			append(0, bold, center),
+			append(1, bold, center),
+			append(2, bold, center),
+			append(3, bold, center),
+			append(4, bold, center),
+
+			next_row,
+
+			append(0, bold, center),
+			append(A, bold, center, center, 1, 1, Ac),
+			append(B, bold, center, center, 1, 1, Bc),
+			append(C, bold, center, center, 1, 1, Cc),
+			append(D, bold, center, center, 1, 1, Dc),
+			append(E, bold, center, center, 1, 1, Ec),
+
+			next_row,
+
+			append(1, bold, center),
+			append(F, bold, center, center, 1, 1, Fc),
+			append(G, bold, center, center, 1, 1, Gc),
+			append(H, bold, center, center, 1, 1, Hc),
+			append(I, bold, center, center, 1, 1, Ic),
+			append(J, bold, center, center, 1, 1, Jc),
+
+			next_row,
+
+			append(2, bold, center),
+			append(K, bold, center, center, 1, 1, Kc),
+			append(L, bold, center, center, 1, 1, Lc),
+			append(M, bold, center, center, 1, 1, Mc),
+			append(N, bold, center, center, 1, 1, Nc),
+			append(O, bold, center, center, 1, 1, Oc),
+
+			next_row,
+
+			append(3, bold, center),
+			append(Px, bold, center, center, 1, 1,Pxc),
+			append(Q, bold, center, center, 1, 1, Qc),
+			append(R, bold, center, center, 1, 1, Rc),
+			append(S, bold, center, center, 1, 1, Sc),
+			append(Tx, bold, center, center, 1, 1,Txc),
+
+			next_row,
+
+			append(4, bold, center),
+			append(U, bold, center, center, 1, 1, Uc),
+			append(V, bold, center, center, 1, 1, Vc),
+			append(W, bold, center, center, 1, 1, Wc),
+			append(X, bold, center, center, 1, 1, Xc),
+			append(Y, bold, center, center, 1, 1, Yc)
+
+
+		]),
+
+
+	send(P, append, T),
+	send(P, open).
 
 window3(Name) :-
 	new(P, dialog(Name)),
+	send(P, size, size(600, 400)),
 	new(T, tabular),
 	%send(P, display, new(T, tabular)),
 	send(T, border, 1),
@@ -101,7 +228,6 @@ window3(Name) :-
 
 		]),
 
-	%T?for_all(message(@arg1?contents, equal, '1'), message(@arg1, background, red)), % Zelle 1: Rote Hintergrundfarbe
-   % T?for_all(message(@arg1?contents, equal, '2'), message(@arg1, background, green)), % Zelle 2: Grüne Hintergrundfarbe
+
 	send(P, append, T),
 	send(P, open).
