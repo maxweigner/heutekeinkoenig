@@ -1,9 +1,9 @@
 :- use_module(library(pce)).
 
 % Später für die Ausgabe des Types vom Terrain an den Nutzer
-feldType(grass, 1).
-feldType(mountain, 2).
-feldType(water, 3).
+feldType(grass, 1, green).
+feldType(mountain, 2, grey).
+feldType(water, 3, blue).
 
 % einheit(type, attack, defense, action multiplier, upkeep)
 % der multiplier ist der angewandte faktor für boni/mali

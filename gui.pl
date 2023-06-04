@@ -6,25 +6,14 @@
 window(Name) :-
 	new(D, dialog(Name)),
 	send(D, append, button(init, message(@prolog, init_feld1))),
-	send(D, append, button(show, message(@prolog, window3, 'Spielfeld'))),
-	send(D, append, button(newbutton, message(@prolog, new_butt, D))),
+	send(D, append, button(show3, message(@prolog, window3, 'Spielfeld'))),
+	send(D, append, button(show2, message(@prolog, window2, 'Spielfeld'))),
 	send(D, open).
-
-
-window2(Name) :-
-	new(D, dialog(Name)),
-
-	feld(0,0,X0),
-	send(D, append(new(T1,text(X0)))),
-	feld(0,1,X1),
-	send(new(_T2,text(X1)), right(T1)),
-
-	send(D, open).
-
 
 window3(Name) :-
-	new(P, auto_sized_picture(Name)),
-	send(P, display, new(T, tabular)),
+	new(P, dialog(Name)),
+	new(T, tabular),
+	%send(P, display, new(T, tabular)),
 	send(T, border, 1),
 	send(T, cell_spacing, -1),
 	send(T, rules, all),
@@ -111,4 +100,8 @@ window3(Name) :-
 
 
 		]),
+
+	%T?for_all(message(@arg1?contents, equal, '1'), message(@arg1, background, red)), % Zelle 1: Rote Hintergrundfarbe
+   % T?for_all(message(@arg1?contents, equal, '2'), message(@arg1, background, green)), % Zelle 2: Grüne Hintergrundfarbe
+	send(P, append, T),
 	send(P, open).
