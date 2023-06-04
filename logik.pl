@@ -4,6 +4,11 @@
 % nicht bei jedem Aufruf angegeben werden muss
 :- assert( current_player(1) ). % das muss so weil sonst err
 
+% Damit vorherige action points (=0) auch in der ersten Runde exisiteren, sonst err
+:- 
+	assert( turn_action_points(1, 0) ),
+	assert( turn_action_points(2, 0) ).
+
 % Aktualisieren des aktuellen Spielers geht hiermit
 change_player_to(Player) :-
 	retract( current_player(_X) ),
@@ -29,7 +34,7 @@ change_player :-
 player_turn(Player) :-
 
     % calculate action points
-    calc_action_points(Player, _Turncounter),
+    calc_action_points(Player),
 
 
     % further logic
@@ -116,4 +121,21 @@ einheit_delete(X, Y) :-
 
 get_color_of_fieldType(FieldTypeInt, Color) :- 
 	feldType(_, FieldTypeInt, Color).
+
+save_action_points(Player) :-
+	turn_action_points(Player, Ap),
+	retract( turn_action_points(Player, _) ),
+	assert( turn_action_points(Player, Ap) ).
+
+calc_action_points(Player) :-
+	% get initial AP at start of game
+	player_tokens(Player, FirstRound),
+	% get leftover action points from turn before
+	turn_action_points(Player, RoundBefore),
+
+	% calculate for new turn
+	AP is RoundBefore + FirstRound,
+
+	retract( turn_action_points(Player, _) ),
+	assert( turn_action_points(Player, AP)).
 	

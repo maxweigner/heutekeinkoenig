@@ -24,6 +24,8 @@ player(2).
 % Die Anzahl an tokens die pro Runde an die Spieler verteilt wird
 player_tokens(10).
 
+% Der Turncounter
+turn_counter(1).
 
 % Erschafft ein festes Spielfeld
 init_feld1 :-
