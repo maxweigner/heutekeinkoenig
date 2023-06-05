@@ -18,28 +18,37 @@ for i in range(0,4):
 	AP = HPog
 	match i:
 		case 0:
-			print("Calculating without Multipliers")
+			print("## Calculating without Multipliers ##")
 
 		case 1:
-			print("\nCalculating with Attack Multipliers")
+			print("\n## Calculating with Attack Multipliers ##")
 			AP = [point * 2 for point in AP]
 
 		case 2:
-			print("\nCalculating with Defense Multipliers")
+			print("\n## Calculating with Defense Multipliers ##")
 			HP = [point * 2 for point in HP]
 			
 
 		case 3:
-			print("\nCalculating with Attack and Defense Multipliers")
+			print("\n## Calculating with Attack and Defense Multipliers ##")
 			AP = [point * 2 for point in AP]
 			HP = [point * 2 for point in HP]
 
 
+	print("-First Iteration-")
 
 	liste = [AP, HP]
 	combinations = [p for p in it.product(*liste)]
 
-	for comb in combinations :
+	newcombs = []
+
+	for comb in combinations:
 		for soln in pl.query("einheit_alive("+str(comb[0])+","+str(comb[1])+", HPnew)"):
 			print(str(comb[0]) + ":" + str(comb[1]) + ":" + str(soln["HPnew"]))
+			newcombs.append((comb[0], soln["HPnew"]))
 
+	print("-Second Iteration-")
+	
+	for comb in newcombs:
+		for soln in pl.query("einheit_alive("+str(comb[0])+","+str(comb[1])+", HPnew)"):
+			print(str(comb[0]) + ":" + str(comb[1]) + ":" + str(soln["HPnew"]))
