@@ -90,11 +90,10 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 	einheit_active(Player, TypeAttack, Xattack, Yattack, _),
 	einheit_active(PlayerDefend, TypeDefend, Xdefend, Ydefend, HP),
 	einheit(TypeAttack, AP, _, _, _),
-	einheit(TypeDefend, _, _, Mult, _),
-	HPwithMult is HP * Mult,
+	einheit(TypeDefend, _, _, MultDef, _),
 	(
 		(% Entweder die Einheit überlebt
-			einheit_alive(AP, HPwithMult, HPnew),
+			einheit_alive(AP, HP, HPnew, MultDef),
 			retract( einheit_active(PlayerDefend, TypeDefend, 
 										Xdefend, Ydefend, HP) ),
 			assert( einheit_active(PlayerDefend, TypeDefend, 
@@ -107,11 +106,23 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 	),
 	!.
 
-
+% DEPRECATED, nur noch hier falls später für debug gebraucht
 % Prüft ob eine Einheit den Angriff überlebt und gibt die neue
 % Defense/HP aus falls dem so ist
 einheit_alive(AP, HP, HPnew) :-
 	HPnew is HP - AP,
+	HPnew > 0.
+
+einheit_alive(AP, HP, HPnew, HPmult) :-
+	% berechnen der differenz nach anwenden des multplikators
+	HPwm is HP * HPmult,
+	PwmDiff is HPwm - AP,
+
+	% berechnen des Reduktionsverhältnis von HP
+	Pratio is PwmDiff / HPwm,
+
+	% berechnen der neuen HP und prüfen ob einheit alive
+	HPnew is HP * Pratio,
 	HPnew > 0.
 
 
