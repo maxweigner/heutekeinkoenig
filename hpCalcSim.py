@@ -11,9 +11,9 @@ APog = [2,3,4,5]
 HPmult = 2
 APmult = 2
 
-simRes = ""
+simRes = "AP:HP:HPnew\n"
 
-print("AP:HP:HPnew\n")
+print(simRes)
 
 for i in range(0,4):
 	HP = HPog
