@@ -3,8 +3,8 @@
 
 % new(@specifier, dialog('windowname'))
 % send(@specifiert, append(text_item(name)))
-window(Name) :-
-	new(D, dialog(Name)),
+window :-
+	new(D, dialog("Game")),
 	send(D, append, button(init, message(@prolog, init_feld1))),
 	send(D, append, button(show3, message(@prolog, window3, 'Spielfeld'))),
 	send(D, append, button(show2, message(@prolog, window2, 'Spielfeld'))),

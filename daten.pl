@@ -63,18 +63,19 @@ init_feld1 :-
 
 % Setzt das Spielfeld sowie die zugewiesenen einheiten zurück
 reset_game :-
-	retractall( feld(_,_,_) ),
-	retractall( einheit_active(_,_,_,_) ),
-	retractall( player_tokens(_,_) ).
+	abolish(feld/3),
+	abolish(einheit_active/4),
+	abolish(player_tokens/2).
 
 
 % Initialisiert die Einheiten für die jeweiligen Spieler
-init_player1(Player, Type1, Type2, Type3) :-
+init_player1(Type1, Type2, Type3) :-
 	% Berechnet die zustehenden Tokens pro Runde für den Spieler
 	einheit(Type1, _, Defense_Points1, _, Cost1),
 	einheit(Type2, _, Defense_Points2, _, Cost2),
 	einheit(Type3, _, Defense_Points3, _, Cost3),
-	
+
+	Player = 1,	
 	player_tokens(Tokens),
 	Cost is Tokens - (Cost1 + Cost2 + Cost3),
 	assert( player_tokens(Player, Cost) ),
@@ -85,12 +86,13 @@ init_player1(Player, Type1, Type2, Type3) :-
 	assert( einheit_active(Player,Type2,0,1,Defense_Points2) ),
 	assert( einheit_active(Player,Type3,1,0,Defense_Points3) ).
 
-init_player2(Player, Type1, Type2, Type3) :-
+init_player2(Type1, Type2, Type3) :-
 	% Berechnet die zustehenden Tokens pro Runde für den Spieler
 	einheit(Type1, _, Defense_Points1, _, Cost1),
 	einheit(Type2, _, Defense_Points2, _, Cost2),
 	einheit(Type3, _, Defense_Points3, _, Cost3),
 	
+	Player = 2,
 	player_tokens(Tokens),
 	Cost is Tokens - (Cost1 + Cost2 + Cost3),
 	assert( player_tokens(Player, Cost) ),

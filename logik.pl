@@ -14,6 +14,21 @@ change_player_to(Player) :-
 	retract( current_player(_X) ),
 	assert( current_player(Player) ).
 
+% Verändern der Player Tokens hierüber
+change_player_tokens(TokensNew) :-
+	TokensNew >= 0,
+	current_player(Player),
+	player_tokens(Player, Tokens)
+	retract( player_tokens(Player, Tokens) ),
+	assert( player_tokens(Player, TokensNew) ).
+
+change_player_tokens_decrement :-
+	current_player(Player),
+	player_tokens(Player, Tokens),
+	TokensDecrement is Tokens - 1,
+	change_player_tokens(TokensDecrement).
+
+
 % Ein Spieler ist entweder current_player oder inactive_player
 % je nach dem ob dieser gerade am Zug ist oder nicht
 inactive_player(Player) :-
@@ -71,26 +86,33 @@ einheit_move(Xold, Yold, Xnew, Ynew) :-
 	assert( einheit_active(Player, Type, Xnew, Ynew, Defense) ),
 
 	% Errechnen der verbleibenden Tokens
-	retract( player_tokens(Player, Tokens) ),
-
 	betrag(Xold - Xnew, Xmove),
 	betrag(Yold - Ynew, Ymove),
 
 	TokensNew is Tokens - Xmove - Ymove,
 	TokensNew >= 0,
 
-	assert( player_tokens(Player, TokensNew) ).
+	change_player_tokens(TokensNew).
 
 
 % Lässt zwei Einheiten gegeneinander Kämpfen
 % Die Einheit des aktuellen Spielers auf Xattack, Yattack
 % greift die Einheit des anderen auf Xdefend, Ydefend an
 einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
+	% Player token abziehen für den angriff-move
+	% Falls nix übrig wird der angriff abgebrochen da false
+	change_player_tokens_decrement,
+
+	% Info für kämpfende Einheiten abrufen
 	current_player(Player),
 	einheit_active(Player, TypeAttack, Xattack, Yattack, _),
 	einheit_active(PlayerDefend, TypeDefend, Xdefend, Ydefend, HP),
+
+	% Info für Einheiten-Typen abrufen
 	einheit(TypeAttack, AP, _, _, _),
 	einheit(TypeDefend, _, _, MultDef, _),
+
+	% Den Kampf durchführen
 	(
 		(% Entweder die Einheit überlebt
 			einheit_alive(AP, HP, HPnew, MultDef),
@@ -106,12 +128,6 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 	),
 	!.
 
-% DEPRECATED, nur noch hier falls später für debug gebraucht
-% Prüft ob eine Einheit den Angriff überlebt und gibt die neue
-% Defense/HP aus falls dem so ist
-einheit_alive(AP, HP, HPnew) :-
-	HPnew is HP - AP,
-	HPnew > 0.
 
 einheit_alive(AP, HP, HPnew, HPmult) :-
 	% berechnen der differenz nach anwenden des multplikators
@@ -130,17 +146,21 @@ einheit_alive(AP, HP, HPnew, HPmult) :-
 einheit_delete(X, Y) :-
 	retract( einheit_active(_, _, X, Y, _) ).
 
+
 get_color_of_fieldType(FieldTypeInt, Color) :- 
 	feldType(_, FieldTypeInt, Color).
+
 
 save_action_points(Player) :-
 	turn_action_points(Player, Ap),
 	retract( turn_action_points(Player, _) ),
 	assert( turn_action_points(Player, Ap) ).
 
+
 calc_action_points(Player) :-
 	% get initial AP at start of game
 	player_tokens(Player, FirstRound),
+
 	% get leftover action points from turn before
 	turn_action_points(Player, RoundBefore),
 
