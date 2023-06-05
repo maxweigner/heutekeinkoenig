@@ -60,7 +60,7 @@ for i in range(0,4):
 			simRes += tmpStr
 			newcombs.append((comb[0], soln["HPnew"]))
 
-	itString = "\n-Second Iteration-\n"
+	itString = "-Second Iteration-\n"
 	print(itString)
 	simRes += itString
 	
@@ -71,5 +71,5 @@ for i in range(0,4):
 			simRes += tmpStr
 
 
-with open("res.txt", "w") as w:
+with open("AttackSimulationResults.txt", "w") as w:
 	w.write(simRes)
