@@ -5,8 +5,8 @@ import itertools as it
 print("Consulting")
 pl.consult("main.pl")
 
-HP = [1,2,3,5]
-AP = [2,3,4,5]
+HPog = [1,2,3,5]
+APog = [2,3,4,5]
 
 HPmult = 2
 APmult = 2
@@ -14,6 +14,8 @@ APmult = 2
 print("AP:HP:HPnew\n")
 
 for i in range(0,4):
+	HP = HPog
+	AP = HPog
 	match i:
 		case 0:
 			print("Calculating without Multipliers")
