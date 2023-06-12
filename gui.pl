@@ -5,17 +5,17 @@
 % send(@specifiert, append(text_item(name)))
 window :-
 	new(D, dialog("Game")),
-	send(D, append, button(init, message(@prolog, init_feld1))),
-	send(D, append, button(show3, message(@prolog, window3, 'Spielfeld'))),
-	send(D, append, button(show2, message(@prolog, window2, 'Spielfeld'))),
+	send(D, append, button('spielfeld', message(@prolog, spielfeld, 'Spielfeld'))),
 	send(D, append, button(reset, message(@prolog, reset_game))),
 	send(D, open).
 
-window2(Name) :-
+spielfeld(Name) :-
 
 	%T?for_all(message(@arg1?contents, equal, '1'), message(@arg1, background, red)), % Zelle 1: Rote Hintergrundfarbe
    % T?for_all(message(@arg1?contents, equal, '2'), message(@arg1, background, green)), % Zelle 2: Grüne Hintergrundfarbe
 	
+	init_feld1,
+
     new(P, dialog(Name)),
     send(P, size, size(800, 600)), % Fenstergröße festlegen
 	new(T, tabular),
@@ -128,102 +128,6 @@ window2(Name) :-
 			append(W, bold, center, center, 1, 1, Wc),
 			append(X, bold, center, center, 1, 1, Xc),
 			append(Y, bold, center, center, 1, 1, Yc)
-
-
-		]),
-
-
-	send(P, append, T),
-	send(P, open).
-
-window3(Name) :-
-	new(P, dialog(Name)),
-	send(P, size, size(600, 400)),
-	new(T, tabular),
-	%send(P, display, new(T, tabular)),
-	send(T, border, 1),
-	send(T, cell_spacing, -1),
-	send(T, rules, all),
-	
-	feld(0, 0, A),
-	feld(0, 1, B),
-	feld(0, 2, C),
-	feld(0, 3, D),
-	feld(0, 4, E),
-	feld(1, 0, F),
-	feld(1, 1, G),
-	feld(1, 2, H),
-	feld(1, 3, I),
-	feld(1, 4, J),
-	feld(2, 0, K),
-	feld(2, 1, L),
-	feld(2, 2, M),
-	feld(2, 3, N),
-	feld(2, 4, O),
-	feld(3, 0, Px),
-	feld(3, 1, Q),
-	feld(3, 2, R),
-	feld(3, 3, S),
-	feld(3, 4, Tx),
-	feld(4, 0, U),
-	feld(4, 1, V),
-	feld(4, 2, W),
-	feld(4, 3, X),
-	feld(4, 4, Y),
-
-	send_list(T, 
-		[
-			append('', bold, center),
-			append(0, bold, center),
-			append(1, bold, center),
-			append(2, bold, center),
-			append(3, bold, center),
-			append(4, bold, center),
-
-			next_row,
-
-			append(0, bold, center),
-			append(A),
-			append(B),
-			append(C),
-			append(D),
-			append(E),
-
-			next_row,
-
-			append(1, bold, center),
-			append(F),
-			append(G),
-			append(H),
-			append(I),
-			append(J),
-
-			next_row,
-
-			append(2, bold, center),
-			append(K),
-			append(L),
-			append(M),
-			append(N),
-			append(O),
-
-			next_row,
-
-			append(3, bold, center),
-			append(Px),
-			append(Q),
-			append(R),
-			append(S),
-			append(Tx),
-
-			next_row,
-
-			append(4, bold, center),
-			append(U),
-			append(V),
-			append(W),
-			append(X),
-			append(Y)
 
 
 		]),
