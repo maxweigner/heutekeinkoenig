@@ -79,6 +79,7 @@ init_player1(Type1, Type2, Type3) :-
 	player_tokens(Tokens),
 	Cost is Tokens - (Cost1 + Cost2 + Cost3),
 	assert( player_tokens(Player, Cost) ),
+	assert( player_tokens_per_turn(Player, Cost) ),
 
 	% Definiert die aktiven einheiten der Spieler
 	% einheit_active(Player, Einheit Type, feldX, feldY)
@@ -96,6 +97,7 @@ init_player2(Type1, Type2, Type3) :-
 	player_tokens(Tokens),
 	Cost is Tokens - (Cost1 + Cost2 + Cost3),
 	assert( player_tokens(Player, Cost) ),
+	assert( player_tokens_per_turn(Player, Cost) ),
 
 	% Definiert die aktiven einheiten der Spieler
 	% einheit_active(Player, Einheit Type, feldX, feldY)
