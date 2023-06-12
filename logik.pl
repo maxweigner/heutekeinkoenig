@@ -14,20 +14,6 @@ change_player_to(Player) :-
 	retract( current_player(_X) ),
 	assert( current_player(Player) ).
 
-% Verändern der Player Tokens hierüber
-change_player_tokens(TokensNew) :-
-	TokensNew >= 0,
-	current_player(Player),
-	player_tokens(Player, Tokens)
-	retract( player_tokens(Player, Tokens) ),
-	assert( player_tokens(Player, TokensNew) ).
-
-change_player_tokens_decrement :-
-	current_player(Player),
-	player_tokens(Player, Tokens),
-	TokensDecrement is Tokens - 1,
-	change_player_tokens(TokensDecrement).
-
 
 % Ein Spieler ist entweder current_player oder inactive_player
 % je nach dem ob dieser gerade am Zug ist oder nicht
@@ -45,20 +31,19 @@ change_player :-
 	!.
 
 
-% globalen Turncounter
-player_turn(Player) :-
+% Verändern der Player Tokens hierüber
+change_player_tokens(TokensNew) :-
+	TokensNew >= 0,
+	current_player(Player),
+	player_tokens(Player, Tokens),
+	retract( player_tokens(Player, Tokens) ),
+	assert( player_tokens(Player, TokensNew) ).
 
-    % calculate action points
-    calc_action_points(Player),
-
-
-    % further logic
-
-
-
-    % end of turn
-    % save remaining ap
-    save_action_points(Player).
+change_player_tokens_decrement :-
+	current_player(Player),
+	player_tokens(Player, Tokens),
+	TokensDecrement is Tokens - 1,
+	change_player_tokens(TokensDecrement).
 
 
 % Gibt den Betrag der Zahl zurück
@@ -79,20 +64,27 @@ einheit_move(Xold, Yold, Xnew, Ynew) :-
 	% Den aktuellen Spieler abfragen
 	current_player(Player),
 
+	% Errechnen der verbleibenden Tokens
+	betrag(Xold - Xnew, Xmove),
+	betrag(Yold - Ynew, Ymove),
+	player_tokens(Player, Tokens),
+
+	TokensNew is Tokens - Xmove - Ymove,
+	TokensNew >= 0,
+
+	% Die vorhandenen Tokens des Spielers aktualisieren
+	% Falls der Spieler nicht genug Tokens hat wird das hier false
+	change_player_tokens(TokensNew),
+
+	% Es darf keine Einheit auf dem Zielfeld bereits vorhanden sein
+	\+ einheit_active(_, _, Xnew, Ynew, _),
+
 	% Die Einheitv on der alten Position nehmen
 	retract( einheit_active(Player, Type, Xold, Yold, Defense) ),
 
 	% Die Einheit an die neue Position setzen
 	assert( einheit_active(Player, Type, Xnew, Ynew, Defense) ),
-
-	% Errechnen der verbleibenden Tokens
-	betrag(Xold - Xnew, Xmove),
-	betrag(Yold - Ynew, Ymove),
-
-	TokensNew is Tokens - Xmove - Ymove,
-	TokensNew >= 0,
-
-	change_player_tokens(TokensNew).
+	!.
 
 
 % Lässt zwei Einheiten gegeneinander Kämpfen
@@ -120,7 +112,7 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 										Xdefend, Ydefend, HP) ),
 			assert( einheit_active(PlayerDefend, TypeDefend, 
 										Xdefend, Ydefend, HPnew) )
-		)
+		), !
 		;
 		(% Oder halt nicht
 			einheit_delete(Xdefend, Ydefend)
@@ -151,22 +143,47 @@ get_color_of_fieldType(FieldTypeInt, Color) :-
 	feldType(_, FieldTypeInt, Color).
 
 
-save_action_points(Player) :-
-	turn_action_points(Player, Ap),
-	retract( turn_action_points(Player, _) ),
-	assert( turn_action_points(Player, Ap) ).
+% Beendet den Aktuellen Zug des Spielers
+end_turn :-
+	% Die verbleibenden Tokens als Turn Speichern
+	current_player(Player),
+	player_tokens(Player, Tokens),
+	last_turn(LastTurn),
+	NewTurn is LastTurn + 1,
+	assert( player_turn(Player, NewTurn, Tokens) ),
+
+	% Die neue Anzahl an Tokens berechnen und setzen
+	calc_tokens(Tcalc),
+	change_player_tokens(Tcalc),
+
+	% Den Spieler wechseln
+	change_player.
 
 
-calc_action_points(Player) :-
-	% get initial AP at start of game
-	player_tokens(Player, FirstRound),
+% Gibt aus der wie vielte Turn der höchste gespeicherte ist
+% für den aktuellen Spieler
+last_turn(Turn) :-
+	current_player(Player),
+	findall(X, player_turn(Player,_,X), Turns),
+	max_member(Turn, Turns).
 
-	% get leftover action points from turn before
-	turn_action_points(Player, RoundBefore),
 
-	% calculate for new turn
-	AP is RoundBefore + FirstRound,
+% der shizz hier ist nicht getestet, sollte aber funzen
+% Berechnet die Summe aus Tokens des aktuellen und vergangenen Zuges
+calc_tokens(Tokens) :-
+	% Aktuellen Spieler herausfinden
+	current_player(Player),
 
-	retract( turn_action_points(Player, _) ),
-	assert( turn_action_points(Player, AP)).
-	
+	% Tokens die Pro Runde dazukommen hinzufügen
+	player_tokens(Player, Tcurrent),
+	player_tokens_per_turn(Player,Tturn),
+
+	Tadd is Tcurrent + Tturn,
+
+	% Tokens aus der vorletzten Runde entfernen
+	last_turn(LastTurn),
+	PreLastTurn is LastTurn - 1,
+	player_turn(Player, PreLastTurn, Tprelast),
+
+	% Neue Anzahl der Tokens ausgeben
+	Tokens is Tadd - Tprelast.
