@@ -9,27 +9,6 @@
 	assert( turn_action_points(1, 0) ),
 	assert( turn_action_points(2, 0) ).
 
-% Aktualisieren des aktuellen Spielers geht hiermit
-change_player_to(Player) :-
-	retract( current_player(_X) ),
-	assert( current_player(Player) ).
-
-
-% Ein Spieler ist entweder current_player oder inactive_player
-% je nach dem ob dieser gerade am Zug ist oder nicht
-inactive_player(Player) :-
-	current_player(Player1),
-	player(Player1),
-	player(Player),
-	Player1 \= Player.
-
-% Das hier muss an jedem Rundenende ausgeführt werden um den
-% aktuellen Spieler zu wechseln
-change_player :-
-	inactive_player(Player),
-	change_player_to(Player),
-	!.
-
 
 % Verändern der Player Tokens hierüber
 change_player_tokens(TokensNew) :-
@@ -141,6 +120,28 @@ einheit_delete(X, Y) :-
 
 get_color_of_fieldType(FieldTypeInt, Color) :- 
 	feldType(_, FieldTypeInt, Color).
+
+
+% Aktualisieren des aktuellen Spielers geht hiermit
+change_player_to(Player) :-
+	retract( current_player(_X) ),
+	assert( current_player(Player) ).
+
+
+% Ein Spieler ist entweder current_player oder inactive_player
+% je nach dem ob dieser gerade am Zug ist oder nicht
+inactive_player(Player) :-
+	current_player(Player1),
+	player(Player1),
+	player(Player),
+	Player1 \= Player.
+
+% Das hier muss an jedem Rundenende ausgeführt werden um den
+% aktuellen Spieler zu wechseln
+change_player :-
+	inactive_player(Player),
+	change_player_to(Player),
+	!.
 
 
 % Beendet den Aktuellen Zug des Spielers
