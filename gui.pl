@@ -6,7 +6,37 @@
 window :-
 	new(D, dialog("Game")),
 	send(D, append, button('spielfeld', message(@prolog, spielfeld, 'Spielfeld'))),
+	send(D, append, button('Start Game', message(@prolog, choose_units))),
 	send(D, append, button(reset, message(@prolog, reset_game))),
+	send(D, open).
+
+process_choose_units_1(U1, U2, U3) :-
+	get(U1, selection, Text1),
+    get(U2, selection, Text2),
+    get(U3, selection, Text3),
+	init_player1(Text1, Text2, Text3).
+   
+process_choose_units_2(U1, U2, U3) :-
+	get(U1, selection, Text1),
+    get(U2, selection, Text2),
+    get(U3, selection, Text3),
+	init_player2(Text1, Text2, Text3).	
+
+choose_units :-
+	new(D, dialog('Waehle Einheiten')),
+	send(D, append, new(Label0, label(name,'Waehlen Sie Ihre Einheiten. Mögliche Optionen sind: infantry, sniper, tank, motorized'))),
+    send(D, append, new(Label1, label(name,'Spieler 1'))),
+	send(D, append, new(P1U1,text_item('Unit 1'))),
+	send(D, append, new(P1U2,text_item('Unit 2'))),
+	send(D, append, new(P1U3,text_item('Unit 3'))),
+	send(D, append, button('Ok 1', message(@prolog, process_choose_units_1, P1U1, P1U2, P1U3))),
+
+	send(D, append, new(Label2, label(name,'Spieler 2'))),
+	send(D, append, new(P2U1,text_item('Unit 1'))),
+	send(D, append, new(P2U2,text_item('Unit 2'))),
+	send(D, append, new(P2U3,text_item('Unit 3'))),
+	send(D, append, button('Ok 2', message(@prolog, process_choose_units_2, P2U1, P2U2, P2U3))),
+
 	send(D, open).
 
 spielfeld(Name) :-
@@ -16,10 +46,16 @@ spielfeld(Name) :-
 	
 	init_feld1,
 
+	% Controls erstellen
+	new(Controls, dialog('Steuerung')),
+	send(Controls, size, size(200, 200)),
+	send(Controls, append, button('testbutton reset',message(@prolog, reset_game))),
+
+	% Spielfeld erstellen
     new(P, dialog(Name)),
-    send(P, size, size(800, 600)), % Fenstergröße festlegen
+    send(P, size, size(230, 200)), % Fenstergröße festlegen
 	new(T, tabular),
-	send(T, table_width, 400),
+	send(T, table_width, 200),
 	send(T, border, 1),
 	send(T, cell_spacing, -1),
 	send(T, rules, all),
@@ -132,6 +168,12 @@ spielfeld(Name) :-
 
 		]),
 
-
+	% Table an Spielfeld andocken
 	send(P, append, T),
+
+	% Controls an Spielfeld andocken
+	send(Controls, right, P),
 	send(P, open).
+	%send(Controls, open),
+	%send(F, open).
+
