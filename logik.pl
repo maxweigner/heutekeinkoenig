@@ -144,6 +144,16 @@ change_player :-
 	!.
 
 
+% Falls das Spiel vorbei ist, mach nix
+end_turn :-
+	game_over,
+	write("Game Over!"), nl,
+
+	inactive_player(Winner),
+	write("Player "),
+	write(Winner), 
+	write(" wins!").
+
 % Beendet den Aktuellen Zug des Spielers
 end_turn :-
 	% Die verbleibenden Tokens als Turn Speichern
@@ -188,3 +198,9 @@ calc_tokens(Tokens) :-
 
 	% Neue Anzahl der Tokens ausgeben
 	Tokens is Tadd - Tprelast.
+
+
+% game_over ist true wenn das game over ist - surprise surprise
+game_over :-
+	current_player(Player),
+	\+ einheit_active(Player,_,_,_,_).
