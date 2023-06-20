@@ -10,6 +10,17 @@ window :-
 	send(D, append, button(reset, message(@prolog, reset_game))),
 	send(D, open).
 
+
+process_choose_units(P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
+	get(P1U1, selection, Text1U1),
+    get(P1U2, selection, Text1U2),
+    get(P1U3, selection, Text1U3),
+	get(P2U1, selection, Text2U1),
+    get(P2U2, selection, Text2U2),
+    get(P2U3, selection, Text2U3),
+	init_player1(Text1U1, Text1U2, Text1U3),
+	init_player2(Text2U1, Text2U2, Text2U3),
+
 process_choose_units_1(U1, U2, U3) :-
 	get(U1, selection, Text1),
     get(U2, selection, Text2),
@@ -24,18 +35,17 @@ process_choose_units_2(U1, U2, U3) :-
 
 choose_units :-
 	new(D, dialog('Waehle Einheiten')),
-	send(D, append, new(Label0, label(name,'Waehlen Sie Ihre Einheiten. Mögliche Optionen sind: infantry, sniper, tank, motorized'))),
+	send(D, append, new(Label0, label(name,'Waehlen Sie Ihre Einheiten. Moegliche Optionen sind: infantry, sniper, tank, motorized'))),
     send(D, append, new(Label1, label(name,'Spieler 1'))),
 	send(D, append, new(P1U1,text_item('Unit 1'))),
 	send(D, append, new(P1U2,text_item('Unit 2'))),
 	send(D, append, new(P1U3,text_item('Unit 3'))),
-	send(D, append, button('Ok 1', message(@prolog, process_choose_units_1, P1U1, P1U2, P1U3))),
 
 	send(D, append, new(Label2, label(name,'Spieler 2'))),
 	send(D, append, new(P2U1,text_item('Unit 1'))),
 	send(D, append, new(P2U2,text_item('Unit 2'))),
 	send(D, append, new(P2U3,text_item('Unit 3'))),
-	send(D, append, button('Ok 2', message(@prolog, process_choose_units_2, P2U1, P2U2, P2U3))),
+	send(D, append, button('Auswahl bestaetigen', message(@prolog, process_choose_units, P1U1, P1U2, P1U3, P2U1, P2U2, P2U3))),
 
 	send(D, open).
 
