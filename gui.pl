@@ -3,15 +3,40 @@
 
 % new(@specifier, dialog('windowname'))
 % send(@specifiert, append(text_item(name)))
+
 window :-
 	new(D, dialog("Game")),
+	openingscreen(D),
 	send(D, append, button('spielfeld', message(@prolog, spielfeld, 'Spielfeld'))),
 	send(D, append, button('Start Game', message(@prolog, choose_units))),
 	send(D, append, button(reset, message(@prolog, reset_game))),
 	send(D, open).
 
+openingscreen(D) :-
+	new(Label, label(name, '
+		 __  __                   __               __                             
+/\ \/\ \                 /\ \__           /\ \              __            
+\ \ \_\ \     __   __  __\ \ ,_\    __    \ \ \/'\      __ /\_\    ___    
+ \ \  _  \  /'__`\/\ \/\ \\ \ \/  /'__`\   \ \ , <    /'__`\/\ \ /' _ `\  
+  \ \ \ \ \/\  __/\ \ \_\ \\ \ \_/\  __/    \ \ \\`\ /\  __/\ \ \/\ \/\ \ 
+   \ \_\ \_\ \____\\ \____/ \ \__\ \____\    \ \_\ \_\ \____\\ \_\ \_\ \_\
+    \/_/\/_/\/____/ \/___/   \/__/\/____/     \/_/\/_/\/____/ \/_/\/_/\/_/
+                                                                          
+                                                                          
+ __  __                                         
+/\ \/\ \                         __             
+\ \ \/'/'    ___      __    ___ /\_\     __     
+ \ \ , <    / __`\  /'__`\/' _ `\/\ \  /'_ `\   
+  \ \ \\`\ /\ \L\ \/\  __//\ \/\ \ \ \/\ \L\ \  
+   \ \_\ \_\ \____/\ \____\ \_\ \_\ \_\ \____ \ 
+    \/_/\/_/\/___/  \/____/\/_/\/_/\/_/\/___L\ \
+                                         /\____/
+                                         \_/__/ 
 
-process_choose_units(P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
+	')),
+	send(D, append, Label).
+
+process_choose_units(D, P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
 	get(P1U1, selection, Text1U1),
     get(P1U2, selection, Text1U2),
     get(P1U3, selection, Text1U3),
@@ -19,19 +44,8 @@ process_choose_units(P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
     get(P2U2, selection, Text2U2),
     get(P2U3, selection, Text2U3),
 	init_player1(Text1U1, Text1U2, Text1U3),
-	init_player2(Text2U1, Text2U2, Text2U3).
-
-process_choose_units_1(U1, U2, U3) :-
-	get(U1, selection, Text1),
-    get(U2, selection, Text2),
-    get(U3, selection, Text3),
-	init_player1(Text1, Text2, Text3).
-   
-process_choose_units_2(U1, U2, U3) :-
-	get(U1, selection, Text1),
-    get(U2, selection, Text2),
-    get(U3, selection, Text3),
-	init_player2(Text1, Text2, Text3).	
+	init_player2(Text2U1, Text2U2, Text2U3),
+	send(D, destroy).
 
 choose_units :-
 	new(D, dialog('Waehle Einheiten')),
@@ -45,9 +59,14 @@ choose_units :-
 	send(D, append, new(P2U1,text_item('Unit 1'))),
 	send(D, append, new(P2U2,text_item('Unit 2'))),
 	send(D, append, new(P2U3,text_item('Unit 3'))),
-	send(D, append, button('Auswahl bestaetigen', message(@prolog, process_choose_units, P1U1, P1U2, P1U3, P2U1, P2U2, P2U3))),
+	send(D, append, button('Auswahl bestaetigen', message(@prolog, process_choose_units,D , P1U1, P1U2, P1U3, P2U1, P2U2, P2U3))),
 
 	send(D, open).
+
+change_cell_content(T, Row, Col, NewContent) :- 
+	get(T, cell(Row, Col), Cell),
+    send(Cell, clear),
+    send(Cell, append, new(Label, text(NewContent))).
 
 spielfeld(Name) :-
 
@@ -178,12 +197,13 @@ spielfeld(Name) :-
 
 		]),
 
+	% Einheiten setzen
+
+
 	% Table an Spielfeld andocken
 	send(P, append, T),
 
 	% Controls an Spielfeld andocken
 	send(Controls, right, P),
 	send(P, open).
-	%send(Controls, open),
-	%send(F, open).
 
