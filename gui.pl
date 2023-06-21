@@ -7,34 +7,34 @@
 window :-
 	new(D, dialog("Game")),
 	openingscreen(D),
-	send(D, append, button('spielfeld', message(@prolog, spielfeld, 'Spielfeld'))),
+	show_image(D),
 	send(D, append, button('Start Game', message(@prolog, choose_units))),
 	send(D, append, button(reset, message(@prolog, reset_game))),
+	new(Label1, label(name,'')),
+	new(Label2, label(name,'a game by king cat and sir swi-ear-a-prolot')),
+	send(D, append, Label1),
+	send(D, append, Label2),
 	send(D, open).
 
 openingscreen(D) :-
-	new(Label, label(name, '
-		 __  __                   __               __                             
-/\ \/\ \                 /\ \__           /\ \              __            
-\ \ \_\ \     __   __  __\ \ ,_\    __    \ \ \/'\      __ /\_\    ___    
- \ \  _  \  /'__`\/\ \/\ \\ \ \/  /'__`\   \ \ , <    /'__`\/\ \ /' _ `\  
-  \ \ \ \ \/\  __/\ \ \_\ \\ \ \_/\  __/    \ \ \\`\ /\  __/\ \ \/\ \/\ \ 
-   \ \_\ \_\ \____\\ \____/ \ \__\ \____\    \ \_\ \_\ \____\\ \_\ \_\ \_\
-    \/_/\/_/\/____/ \/___/   \/__/\/____/     \/_/\/_/\/____/ \/_/\/_/\/_/
-                                                                          
-                                                                          
- __  __                                         
-/\ \/\ \                         __             
-\ \ \/'/'    ___      __    ___ /\_\     __     
- \ \ , <    / __`\  /'__`\/' _ `\/\ \  /'_ `\   
-  \ \ \\`\ /\ \L\ \/\  __//\ \/\ \ \ \/\ \L\ \  
-   \ \_\ \_\ \____/\ \____\ \_\ \_\ \_\ \____ \ 
-    \/_/\/_/\/___/  \/____/\/_/\/_/\/_/\/___L\ \
-                                         /\____/
-                                         \_/__/ 
+	new(Label1, label(name,'Herzlich Willkommen zu:')),
+	new(Label2, label(name,'Heute kein Koenig - the Game')),
+	new(Label3, label(name,'oder auch: Battle for Westnoth - only with guns.')),
+	new(Label4, label(name,'Enjoy and remember: all your bases are belong to us')),
+	new(Label5, label(name,'')),
+	send(D, append, Label1),
+	send(D, append, Label2),
+	send(D, append, Label3),
+	send(D, append, Label4),
+	send(D, append, Label5).
 
-	')),
-	send(D, append, Label).
+show_image(D) :-
+	new(I, image('i-need-you-cats.gif')),
+   	new(B, bitmap(I)),
+	new(D2, dialog('')),
+	%send(D2, append, B),
+	send(D2, display, B),
+	send(D2, right, D).
 
 process_choose_units(D, P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
 	get(P1U1, selection, Text1U1),
@@ -45,7 +45,8 @@ process_choose_units(D, P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
     get(P2U3, selection, Text2U3),
 	init_player1(Text1U1, Text1U2, Text1U3),
 	init_player2(Text2U1, Text2U2, Text2U3),
-	send(D, destroy).
+	send(D, destroy),
+	spielfeld('Spielfeld').
 
 choose_units :-
 	new(D, dialog('Waehle Einheiten')),
