@@ -80,8 +80,8 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 	einheit_active(PlayerDefend, TypeDefend, Xdefend, Ydefend, HP),
 
 	% Info für Einheiten-Typen abrufen
-	einheit(TypeAttack, AP, _, _, _),
-	einheit(TypeDefend, _, _, MultDef, _),
+	einheit(TypeAttack, AP, _, _, _, _),
+	einheit(TypeDefend, _, _, MultDef, _, _),
 
 	% Den Kampf durchführen
 	(
