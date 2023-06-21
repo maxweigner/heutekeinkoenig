@@ -8,12 +8,12 @@ feldType(grass, 1, green).
 feldType(mountain, 2, grey).
 feldType(water, 3, blue).
 
-% einheit(type, attack, defense, action multiplier, upkeep)
+% einheit(type, attack, defense, action multiplier, upkeep, symbol)
 % der multiplier ist der angewandte faktor für boni/mali
-einheit(infantry, 2, 2, 2, 1).
-einheit(sniper, 3, 1, 3, 1).
-einheit(motorized, 4, 3, 2, 2).
-einheit(tank, 5, 5, 3, 3).
+einheit(infantry, 2, 2, 2, 1, i).
+einheit(sniper, 3, 1, 3, 1, s).
+einheit(motorized, 4, 3, 2, 2, m).
+einheit(tank, 5, 5, 3, 3, t).
 
 % Startpositionen der Spieler mit jeweils -1 auf die coords
 % Damit ist die init_player universell
@@ -71,9 +71,9 @@ reset_game :-
 % Initialisiert die Einheiten für die jeweiligen Spieler
 init_player1(Type1, Type2, Type3) :-
 	% Berechnet die zustehenden Tokens pro Runde für den Spieler
-	einheit(Type1, _, Defense_Points1, _, Cost1),
-	einheit(Type2, _, Defense_Points2, _, Cost2),
-	einheit(Type3, _, Defense_Points3, _, Cost3),
+	einheit(Type1, _, Defense_Points1, _, Cost1, _),
+	einheit(Type2, _, Defense_Points2, _, Cost2, _),
+	einheit(Type3, _, Defense_Points3, _, Cost3, _),
 
 	Player = 1,	
 	player_tokens(Tokens),
@@ -89,9 +89,9 @@ init_player1(Type1, Type2, Type3) :-
 
 init_player2(Type1, Type2, Type3) :-
 	% Berechnet die zustehenden Tokens pro Runde für den Spieler
-	einheit(Type1, _, Defense_Points1, _, Cost1),
-	einheit(Type2, _, Defense_Points2, _, Cost2),
-	einheit(Type3, _, Defense_Points3, _, Cost3),
+	einheit(Type1, _, Defense_Points1, _, Cost1, _),
+	einheit(Type2, _, Defense_Points2, _, Cost2, _),
+	einheit(Type3, _, Defense_Points3, _, Cost3, _),
 	
 	Player = 2,
 	player_tokens(Tokens),
