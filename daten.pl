@@ -68,6 +68,7 @@ reset_game :-
 	abolish(current_player/1),
 	abolish(game_window/1),
 	abolish(game_table/1),
+	abolish(game_control/1),
 	abolish(player_tokens/2).
 
 
