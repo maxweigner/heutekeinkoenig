@@ -20,7 +20,7 @@ openingscreen(D) :-
 	new(Label1, label(name,'Herzlich Willkommen zu:')),
 	new(Label2, label(name,'Heute kein Koenig - the Game')),
 	new(Label3, label(name,'oder auch: Battle for Westnoth - only with guns.')),
-	new(Label4, label(name,'Enjoy and remember: all your bases are belong to us')),
+	new(Label4, label(name,'Enjoy and remember: all your base are belong to us')),
 	new(Label5, label(name,'')),
 	send(D, append, Label1),
 	send(D, append, Label2),
