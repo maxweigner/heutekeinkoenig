@@ -100,6 +100,18 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 	!.
 
 
+% Lässt eine Einheit bewegen, oder wenn der Platz schon belegt ist, angreifen
+% Der Zug wird danach automatisch beendet
+einheit_action(Xold, Yold, Xnew, Ynew) :-
+	( % Bewege Einheit oder greife damit an, falls möglich
+		einheit_move(Xold, Yold, Xnew, Ynew),
+		!;
+		einheit_attack(Xold, Yold, Xnew, Ynew)
+	),
+	
+	end_turn.
+
+
 einheit_alive(AP, HP, HPnew, HPmult) :-
 	% berechnen der differenz nach anwenden des multplikators
 	HPwm is HP * HPmult,
@@ -144,12 +156,24 @@ change_player :-
 	!.
 
 
+% game_over ist true wenn das game over ist - surprise surprise
+% Gibt den Gewinner zurück
+game_over(Winner) :-
+	(
+		current_player(Winner),
+		\+ einheit_active(Winner,_,_,_,_)
+	), !;
+	(
+		inactive_player(Winner),
+		\+ einheit_active(Winner,_,_,_,_)
+	).
+
+
 % Falls das Spiel vorbei ist, mach nix
 end_turn :-
-	game_over,
+	game_over(Winner),
 	write("Game Over!"), nl,
 
-	inactive_player(Winner),
 	write("Player "),
 	write(Winner), 
 	write(" wins!").
@@ -198,9 +222,3 @@ calc_tokens(Tokens) :-
 
 	% Neue Anzahl der Tokens ausgeben
 	Tokens is Tadd - Tprelast.
-
-
-% game_over ist true wenn das game over ist - surprise surprise
-game_over :-
-	current_player(Player),
-	\+ einheit_active(Player,_,_,_,_).
