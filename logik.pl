@@ -9,6 +9,12 @@
 	assert( turn_action_points(1, 0) ),
 	assert( turn_action_points(2, 0) ).
 
+% Verhindern von "Unknown procedure" in last_turn
+:- 
+	assert( player_turn(1, -1, 0) ),
+	assert( player_turn(1,  0, 0) ),
+	assert( player_turn(2, -1, 0) ),
+	assert( player_turn(2,  0, 0) ).
 
 % Verändern der Player Tokens hierüber
 change_player_tokens(TokensNew) :-
@@ -43,6 +49,9 @@ einheit_move(Xold, Yold, Xnew, Ynew) :-
 	% Den aktuellen Spieler abfragen
 	current_player(Player),
 
+	% Es darf keine Einheit auf dem Zielfeld bereits vorhanden sein
+	\+ einheit_active(_, _, Xnew, Ynew, _),
+
 	% Errechnen der verbleibenden Tokens
 	betrag(Xold - Xnew, Xmove),
 	betrag(Yold - Ynew, Ymove),
@@ -54,9 +63,6 @@ einheit_move(Xold, Yold, Xnew, Ynew) :-
 	% Die vorhandenen Tokens des Spielers aktualisieren
 	% Falls der Spieler nicht genug Tokens hat wird das hier false
 	change_player_tokens(TokensNew),
-
-	% Es darf keine Einheit auf dem Zielfeld bereits vorhanden sein
-	\+ einheit_active(_, _, Xnew, Ynew, _),
 
 	% Die Einheitv on der alten Position nehmen
 	retract( einheit_active(Player, Type, Xold, Yold, Defense) ),
@@ -108,8 +114,8 @@ einheit_action(Xold, Yold, Xnew, Ynew) :-
 		!;
 		einheit_attack(Xold, Yold, Xnew, Ynew)
 	),
-	
-	end_turn.
+
+	end_turn,!.
 
 
 einheit_alive(AP, HP, HPnew, HPmult) :-
@@ -201,6 +207,9 @@ last_turn(Turn) :-
 	current_player(Player),
 	findall(X, player_turn(Player,_,X), Turns),
 	max_member(Turn, Turns).
+
+last_turn(Turn) :-
+	Turn is 0.
 
 
 % der shizz hier ist nicht getestet, sollte aber funzen

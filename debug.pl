@@ -1,5 +1,10 @@
 % hier kommt so debug mäßiges zeugs hin
 
+debug_init :-
+	init_player1(infantry,infantry,infantry),
+	init_player2(infantry,infantry,infantry),
+	init_feld1.
+
 print_info(Type,X,Y,HP) :-
 	write("-------"),nl,
 	write("Type: "),
