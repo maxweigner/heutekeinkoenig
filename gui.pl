@@ -290,7 +290,6 @@ update_controls :-
 
 process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
 	game_control(Controls),
-	
 
 	get(FromX, selection, FX),
     get(FromY, selection, FY),
@@ -301,7 +300,8 @@ process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
 	atom_number(FY, FY2),
 	atom_number(TX, TX2),
 	atom_number(TY, TY2),
-	einheit_move(FX2, FY2, TX2, TY2),
+
+	einheit_action(FX2, FY2, TX2, TY2),
 	update_controls,
 	spielfeld.
 
