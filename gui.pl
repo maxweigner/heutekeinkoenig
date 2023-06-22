@@ -32,7 +32,6 @@ show_image(D) :-
 	new(I, image('i-need-you-cats.gif')),
    	new(B, bitmap(I)),
 	new(D2, dialog('')),
-	%send(D2, append, B),
 	send(D2, display, B),
 	send(D2, right, D).
 
@@ -46,7 +45,7 @@ process_choose_units(D, P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
 	init_player1(Text1U1, Text1U2, Text1U3),
 	init_player2(Text2U1, Text2U2, Text2U3),
 	send(D, destroy),
-	spielfeld('Spielfeld').
+	init_spielfeld('Spielfeld').
 
 choose_units :-
 	new(D, dialog('Waehle Einheiten')),
@@ -65,24 +64,14 @@ choose_units :-
 	send(D, open).
 
 change_cell_content(T, Row, Col, NewContent) :- 
-	get(T, cell(Row, Col), Cell),
-    send(Cell, clear),
-    send(Cell, append, new(Label, text(NewContent))).
+	get(T, cell, Row, Col, Cell),
+	send(Cell, free),
+	send(T, append(NewContent, bold, center, center, Row, Col, blue)).
 
-spielfeld(Name) :-
-
-	%T?for_all(message(@arg1?contents, equal, '1'), message(@arg1, background, red)), % Zelle 1: Rote Hintergrundfarbe
-   % T?for_all(message(@arg1?contents, equal, '2'), message(@arg1, background, green)), % Zelle 2: Grüne Hintergrundfarbe
-	
+init_spielfeld(Name) :-
 	init_feld1,
 
-	% Controls erstellen
-	new(Controls, dialog('Steuerung')),
-	send(Controls, size, size(200, 200)),
-	send(Controls, append, button('testbutton reset',message(@prolog, reset_game))),
-
-	% Spielfeld erstellen
-    new(P, dialog(Name)),
+	new(P, dialog(Name)),
     send(P, size, size(230, 200)), % Fenstergröße festlegen
 	new(T, tabular),
 	send(T, table_width, 200),
@@ -90,6 +79,31 @@ spielfeld(Name) :-
 	send(T, cell_spacing, -1),
 	send(T, rules, all),
 	
+	% Window und Tabelle speichern
+	assert(game_window(P)),
+	assert(game_table(T)),
+
+	spielfeld(Name),
+
+	% Table an Spielfeld andocken
+	send(P, append, T),
+
+	
+	
+
+	% Controls an Spielfeld andocken
+	show_controls(P),
+
+	% Spielfeld öffnen
+	send(P, open).
+
+spielfeld(Name) :-
+	game_window(P),
+	game_table(T),
+	%T?for_all(message(@arg1?contents, equal, '1'), message(@arg1, background, red)), % Zelle 1: Rote Hintergrundfarbe
+    % T?for_all(message(@arg1?contents, equal, '2'), message(@arg1, background, green)), % Zelle 2: Grüne Hintergrundfarbe
+
+	% Tile Farben setzen
 	feld(0, 0, A),
 	get_color_of_fieldType(A, Ac),
 	feld(0, 1, B),
@@ -141,6 +155,34 @@ spielfeld(Name) :-
 	feld(4, 4, Y),
 	get_color_of_fieldType(Y, Yc),
 
+	% Einheiten Symbole fetchen.
+	unit_symbol_at_cell(0, 0, As),
+	unit_symbol_at_cell(0, 1, Bs),
+	unit_symbol_at_cell(0, 2, Cs),
+	unit_symbol_at_cell(0, 3, Ds),
+	unit_symbol_at_cell(0, 4, Es),
+	unit_symbol_at_cell(1, 0, Fs),
+	unit_symbol_at_cell(1, 1, Gs),
+	unit_symbol_at_cell(1, 2, Hs),
+	unit_symbol_at_cell(1, 3, Is),
+	unit_symbol_at_cell(1, 4, Js),
+	unit_symbol_at_cell(2, 0, Ks),
+	unit_symbol_at_cell(2, 1, Ls),
+	unit_symbol_at_cell(2, 2, Ms),
+	unit_symbol_at_cell(2, 3, Ns),
+	unit_symbol_at_cell(2, 4, Os),
+	unit_symbol_at_cell(3, 0, Pxs),
+	unit_symbol_at_cell(3, 1, Qs),
+	unit_symbol_at_cell(3, 2, Rs),
+	unit_symbol_at_cell(3, 3, Ss),
+	unit_symbol_at_cell(3, 4, Txs),
+	unit_symbol_at_cell(4, 0, Us),
+	unit_symbol_at_cell(4, 1, Vs),
+	unit_symbol_at_cell(4, 2, Ws),
+	unit_symbol_at_cell(4, 3, Xs),
+	unit_symbol_at_cell(4, 4, Ys),
+
+	% Zellen hinzufügen
 	send_list(T, 
 		[
 			append('', bold, center),
@@ -153,58 +195,92 @@ spielfeld(Name) :-
 			next_row,
 
 			append(0, bold, center),
-			append(A, bold, center, center, 1, 1, Ac),
-			append(B, bold, center, center, 1, 1, Bc),
-			append(C, bold, center, center, 1, 1, Cc),
-			append(D, bold, center, center, 1, 1, Dc),
-			append(E, bold, center, center, 1, 1, Ec),
+			append(As, bold, center, center, 1, 1, Ac),
+			append(Bs, bold, center, center, 1, 1, Bc),
+			append(Cs, bold, center, center, 1, 1, Cc),
+			append(Ds, bold, center, center, 1, 1, Dc),
+			append(Es, bold, center, center, 1, 1, Ec),
 
 			next_row,
 
 			append(1, bold, center),
-			append(F, bold, center, center, 1, 1, Fc),
-			append(G, bold, center, center, 1, 1, Gc),
-			append(H, bold, center, center, 1, 1, Hc),
-			append(I, bold, center, center, 1, 1, Ic),
-			append(J, bold, center, center, 1, 1, Jc),
+			append(Fs, bold, center, center, 1, 1, Fc),
+			append(Gs, bold, center, center, 1, 1, Gc),
+			append(Hs, bold, center, center, 1, 1, Hc),
+			append(Is, bold, center, center, 1, 1, Ic),
+			append(Js, bold, center, center, 1, 1, Jc),
 
 			next_row,
 
 			append(2, bold, center),
-			append(K, bold, center, center, 1, 1, Kc),
-			append(L, bold, center, center, 1, 1, Lc),
-			append(M, bold, center, center, 1, 1, Mc),
-			append(N, bold, center, center, 1, 1, Nc),
-			append(O, bold, center, center, 1, 1, Oc),
+			append(Ks, bold, center, center, 1, 1, Kc),
+			append(Ls, bold, center, center, 1, 1, Lc),
+			append(Ms, bold, center, center, 1, 1, Mc),
+			append(Ns, bold, center, center, 1, 1, Nc),
+			append(Os, bold, center, center, 1, 1, Oc),
 
 			next_row,
 
 			append(3, bold, center),
-			append(Px, bold, center, center, 1, 1,Pxc),
-			append(Q, bold, center, center, 1, 1, Qc),
-			append(R, bold, center, center, 1, 1, Rc),
-			append(S, bold, center, center, 1, 1, Sc),
-			append(Tx, bold, center, center, 1, 1,Txc),
+			append(Pxs, bold, center, center, 1, 1,Pxc),
+			append(Qs, bold, center, center, 1, 1, Qc),
+			append(Rs, bold, center, center, 1, 1, Rc),
+			append(Ss, bold, center, center, 1, 1, Sc),
+			append(Txs, bold, center, center, 1, 1,Txc),
 
 			next_row,
 
 			append(4, bold, center),
-			append(U, bold, center, center, 1, 1, Uc),
-			append(V, bold, center, center, 1, 1, Vc),
-			append(W, bold, center, center, 1, 1, Wc),
-			append(X, bold, center, center, 1, 1, Xc),
-			append(Y, bold, center, center, 1, 1, Yc)
+			append(Us, bold, center, center, 1, 1, Uc),
+			append(Vs, bold, center, center, 1, 1, Vc),
+			append(Ws, bold, center, center, 1, 1, Wc),
+			append(Xs, bold, center, center, 1, 1, Xc),
+			append(Ys, bold, center, center, 1, 1, Yc)
 
 
-		]),
+		]).
 
 	% Einheiten setzen
+	
+
+unit_symbol_at_cell(Row, Col, Symbol) :-
+	(
+		\+ einheit_active(_, Type, Row, Col,_),
+		!,
+		Symbol = ''
+	;
+		einheit_active(_, Type, Row, Col,_),
+		einheit(Type,_,_,_,_,Symbol)
+	).
 
 
-	% Table an Spielfeld andocken
-	send(P, append, T),
+show_controls(D) :-
 
-	% Controls an Spielfeld andocken
-	send(Controls, right, P),
-	send(P, open).
+	new(Controls, dialog('Steuerung')),
+	send(Controls, size, size(200, 200)),
 
+	current_player(Player),
+	string_concat('Aktiv: Spieler ', Player, String_active_player),
+
+	% die Bausteine zur Steuerung
+	send(Controls, append, new(Label1, label(name, String_active_player))),
+	send(Controls, append, button('testbutton reset',message(@prolog, reset_game))),
+
+	send(Controls, right, D).
+
+test_change :-
+	new(D, dialog),
+	new(T, tabular),
+	send(T, table_width, 200),
+	send(T, border, 1),
+	send(T, cell_spacing, -1),
+	send(T, rules, all),
+	send(T, append, new(Cell, table_cell(text('hi')))),
+	send(T, append, new(Cell2, table_cell(text('hi2')))),
+	send(T, append, new(Cell3, table_cell(text('hi')))),
+	send(T, append, new(Cell4, table_cell(text('hi2')))),
+	get(T, cell, 1,1, Cell5 ),
+	send(Cell5, selection, 'haha'),
+	%send(Cell5, free),
+	send(D, append, T),
+	send(D, open).

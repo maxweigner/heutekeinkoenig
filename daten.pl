@@ -65,6 +65,9 @@ init_feld1 :-
 reset_game :-
 	abolish(feld/3),
 	abolish(einheit_active/4),
+	abolish(current_player/1),
+	abolish(game_window/1),
+	abolish(game_table/1),
 	abolish(player_tokens/2).
 
 
