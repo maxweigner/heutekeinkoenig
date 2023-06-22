@@ -68,38 +68,41 @@ change_cell_content(T, Row, Col, NewContent) :-
 	send(Cell, free),
 	send(T, append(NewContent, bold, center, center, Row, Col, blue)).
 
-init_spielfeld(Name) :-
-	init_feld1,
-
-	new(P, dialog(Name)),
-    send(P, size, size(230, 200)), % Fenstergröße festlegen
+init_table :- 
+	game_window(P),
 	new(T, tabular),
 	send(T, table_width, 200),
 	send(T, border, 1),
 	send(T, cell_spacing, -1),
 	send(T, rules, all),
-	
-	% Window und Tabelle speichern
-	assert(game_window(P)),
-	assert(game_table(T)),
-
-	spielfeld(Name),
-
-	% Table an Spielfeld andocken
 	send(P, append, T),
+	assert(game_table(T)).
 
+init_spielfeld(Name) :-
+	init_feld1,
 	
-	
-
-	% Controls an Spielfeld andocken
+	new(P, dialog(Name)),
+    send(P, size, size(400, 200)), % Fenstergröße festlegen
+	assert(game_window(P)),
+	init_table,
+	game_table(T),
 	show_controls(P),
+	
+
+	spielfeld,
+
 
 	% Spielfeld öffnen
 	send(P, open).
 
-spielfeld(Name) :-
+spielfeld :-
 	game_window(P),
+	game_table(T_old),
+	send(T_old, free),
+	retract(game_table(T_old)),
+	init_table,
 	game_table(T),
+
 	%T?for_all(message(@arg1?contents, equal, '1'), message(@arg1, background, red)), % Zelle 1: Rote Hintergrundfarbe
     % T?for_all(message(@arg1?contents, equal, '2'), message(@arg1, background, green)), % Zelle 2: Grüne Hintergrundfarbe
 
@@ -257,16 +260,50 @@ unit_symbol_at_cell(Row, Col, Symbol) :-
 show_controls(D) :-
 
 	new(Controls, dialog('Steuerung')),
-	send(Controls, size, size(200, 200)),
+	send(Controls, size, size(400, 300)),
 
 	current_player(Player),
+	player_tokens(Player, Tokens),
 	string_concat('Aktiv: Spieler ', Player, String_active_player),
-
+	string_concat('Tokens: ', Tokens, String_tokens),
 	% die Bausteine zur Steuerung
 	send(Controls, append, new(Label1, label(name, String_active_player))),
-	send(Controls, append, button('testbutton reset',message(@prolog, reset_game))),
+	send(Controls, append, new(Label4, label(name, String_tokens))),
+	send(Controls, append, new(Label2, label(name, 'Einheit waehlen:'))),
+	send(Controls, append, new(FromX,text_item('X:'))),
+	send(Controls, append, new(FromY,text_item('Y:'))),
+	send(Controls, append, new(Label3, label(name, 'Bewegen nach:'))),
+	send(Controls, append, new(ToX,text_item('X:'))),
+	send(Controls, append, new(ToY,text_item('Y:'))),
+	send(Controls, append, button('Bestaetigen',message(@prolog, process_move_unit, FromX, FromY, ToX, ToY, Controls))),
+	%send(D, left, Controls),
+	send(Controls, open),
+	assert(game_control(Controls)).
 
-	send(Controls, right, D).
+
+update_controls :-
+	game_window(D),
+	game_control(Controls),
+	send(Controls, free),
+	abolish(game_control/1),
+	show_controls(D).
+
+process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
+	game_control(Controls),
+	
+
+	get(FromX, selection, FX),
+    get(FromY, selection, FY),
+    get(ToX, selection, TX),
+	get(ToY, selection, TY),
+
+	atom_number(FX, FX2),
+	atom_number(FY, FY2),
+	atom_number(TX, TX2),
+	atom_number(TY, TY2),
+	einheit_move(FX2, FY2, TX2, TY2),
+	update_controls,
+	spielfeld.
 
 test_change :-
 	new(D, dialog),
