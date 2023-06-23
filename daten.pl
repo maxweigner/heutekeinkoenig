@@ -11,9 +11,9 @@ feldType(water, 3, blue).
 % einheit(type, attack, defense, action multiplier, upkeep, symbol)
 % der multiplier ist der angewandte faktor für boni/mali
 einheit(infantry, 2, 2, 2, 1, i).
-einheit(sniper, 3, 1, 3, 1, s).
+einheit(robot, 3, 1, 3, 1, s).
 einheit(motorized, 4, 3, 2, 2, m).
-einheit(tank, 5, 5, 3, 3, t).
+einheit(tank, 5, 5, 3, 2, t).
 
 % Startpositionen der Spieler mit jeweils -1 auf die coords
 % Damit ist die init_player universell
@@ -22,7 +22,7 @@ player(1).
 player(2).
 
 % Die Anzahl an tokens die pro Runde an die Spieler verteilt wird
-player_tokens(10).
+player_tokens(8).
 
 % Der Turncounter
 turn_counter(1).

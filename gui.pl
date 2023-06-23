@@ -4,7 +4,7 @@
 % new(@specifier, dialog('windowname'))
 % send(@specifiert, append(text_item(name)))
 
-window :-
+heutekeinkoenig :-
 	new(D, dialog("Game")),
 	openingscreen(D),
 	show_image(D),
@@ -49,7 +49,7 @@ process_choose_units(D, P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
 
 choose_units :-
 	new(D, dialog('Waehle Einheiten')),
-	send(D, append, new(Label0, label(name,'Waehlen Sie Ihre Einheiten. Moegliche Optionen sind: infantry, sniper, tank, motorized'))),
+	send(D, append, new(Label0, label(name,'Waehlen Sie Ihre Einheiten. Moegliche Optionen sind: infantry, robot, tank, motorized'))),
     send(D, append, new(Label1, label(name,'Spieler 1'))),
 	send(D, append, new(P1U1,text_item('Unit 1'))),
 	send(D, append, new(P1U2,text_item('Unit 2'))),
