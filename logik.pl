@@ -174,11 +174,12 @@ change_player :-
 game_over(Winner) :-
 	(
 		current_player(Winner),
-		\+ einheit_active(Winner,_,_,_,_)
-	), !;
-	(
+		inactive_player(Loser),
+		\+ einheit_active(Loser,_,_,_,_),
+		!
+		;
 		inactive_player(Winner),
-		\+ einheit_active(Winner,_,_,_,_)
+		!
 	).
 
 

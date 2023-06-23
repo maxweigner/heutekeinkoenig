@@ -320,14 +320,15 @@ process_end_turn :-
 game_over_gui(Winner) :-
 	game_control(C),
 	game_window(D),
-	send(C, destroy),
-	send(D, destroy),
 	new(G, dialog('Winner')),
-	new(I, image('Winner.gif')),
+	new(I, image('win.jpg')),
 	new(B, bitmap(I)),
 	send(G, display, B),
-	send(G, append, new(Label, label(name, Winner))),
-	send(G, open).
+	atomic_list_concat(['Player ', Winner, ' wins!'], String_result),
+	send(G, append, new(Label, label(name, String_result))),
+	send(G, open),
+	send(C, destroy),
+	send(D, destroy).
 
 
 %TODO delete
