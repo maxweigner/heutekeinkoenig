@@ -185,6 +185,7 @@ game_over(Winner) :-
 % Falls das Spiel vorbei ist, mach nix
 end_turn :-
 	game_over(Winner),
+	game_over_gui(Winner),
 	write("Game Over!"), nl,
 
 	write("Player "),
@@ -232,7 +233,7 @@ calc_tokens(Tokens) :-
 	last_turn(LastTurn),
 	PreLastTurn is LastTurn - 1,
 
-	player_turn(Player, LastTurn, Tlast)
+	player_turn(Player, LastTurn, Tlast),
 	player_turn(Player, PreLastTurn, Tprelast),
 
 	% Neue Anzahl der Tokens ausgeben
