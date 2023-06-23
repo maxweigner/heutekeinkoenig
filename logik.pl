@@ -110,9 +110,9 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 % Der Zug wird danach automatisch beendet
 einheit_action(Xold, Yold, Xnew, Ynew) :-
 	( % Bewege Einheit oder greife damit an, falls möglich
-		einheit_move(Xold, Yold, Xnew, Ynew),
+		einheit_move(Yold, Xold, Ynew, Xnew),
 		!;
-		einheit_attack(Xold, Yold, Xnew, Ynew)
+		einheit_attack(Yold, Xold, Ynew, Xnew)
 	),
 
 	(
