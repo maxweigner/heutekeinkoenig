@@ -245,9 +245,7 @@ calc_tokens(Tokens) :-
 
 	% Tokens aus der letzten (aktuellen) und vorletzten Runde holen
 	last_turn(LastTurn),
-	PreLastTurn is LastTurn - 1,
-	player_turn(Player, LastTurn,    Tlast),
-	player_turn(Player, PreLastTurn, Tprelast),
+	player_turn(Player, LastTurn, Tlast),
 
 	% Neue Anzahl der Tokens berechnen
 	(

@@ -49,13 +49,13 @@ process_choose_units(D, P1U1, P1U2, P1U3, P2U1, P2U2, P2U3) :-
 
 choose_units :-
 	new(D, dialog('Waehle Einheiten')),
-	send(D, append, new(Label0, label(name,'Waehlen Sie Ihre Einheiten. Moegliche Optionen sind: infantry, robot, tank, motorized'))),
-    send(D, append, new(Label1, label(name,'Spieler 1'))),
+	send(D, append, new(_, label(name,'Waehlen Sie Ihre Einheiten. Moegliche Optionen sind: infantry, robot, tank, motorized'))),
+    send(D, append, new(_, label(name,'Spieler 1'))),
 	send(D, append, new(P1U1,text_item('Unit 1'))),
 	send(D, append, new(P1U2,text_item('Unit 2'))),
 	send(D, append, new(P1U3,text_item('Unit 3'))),
 
-	send(D, append, new(Label2, label(name,'Spieler 2'))),
+	send(D, append, new(_, label(name,'Spieler 2'))),
 	send(D, append, new(P2U1,text_item('Unit 1'))),
 	send(D, append, new(P2U2,text_item('Unit 2'))),
 	send(D, append, new(P2U3,text_item('Unit 3'))),
@@ -86,18 +86,14 @@ init_spielfeld(Name) :-
     send(P, size, size(400, 200)), % Fenstergröße festlegen
 	assert(game_window(P)),
 	init_table,
-	game_table(T),
-	show_controls(P),
-	
+	show_controls,
 
 	spielfeld,
-
 
 	% Spielfeld öffnen
 	send(P, open).
 
 spielfeld :-
-	game_window(P),
 	game_table(T_old),
 	send(T_old, free),
 	retract(game_table(T_old)),
@@ -249,7 +245,7 @@ spielfeld :-
 
 unit_symbol_at_cell(Row, Col, Symbol, Color) :-
 	(
-		\+ einheit_active(Player, Type, Row, Col,_),
+		\+ einheit_active(_, _, Row, Col,_),
 		!,
 		Symbol = '',
 		Color = black
@@ -261,7 +257,7 @@ unit_symbol_at_cell(Row, Col, Symbol, Color) :-
 	).
 
 
-show_controls(D) :-
+show_controls :-
 
 	new(Controls, dialog('Steuerung')),
 	send(Controls, size, size(400, 300)),
@@ -272,12 +268,12 @@ show_controls(D) :-
 	string_concat('Tokens: ', Tokens, String_tokens),
 
 	% die Bausteine zur Steuerung
-	send(Controls, append, new(Label1, label(name, String_active_player))),
-	send(Controls, append, new(Label4, label(name, String_tokens))),
-	send(Controls, append, new(Label2, label(name, 'Einheit waehlen:'))),
+	send(Controls, append, new(_, label(name, String_active_player))),
+	send(Controls, append, new(_, label(name, String_tokens))),
+	send(Controls, append, new(_, label(name, 'Einheit waehlen:'))),
 	send(Controls, append, new(FromX,text_item('X:'))),
 	send(Controls, append, new(FromY,text_item('Y:'))),
-	send(Controls, append, new(Label3, label(name, 'Bewegen nach:'))),
+	send(Controls, append, new(_, label(name, 'Bewegen nach:'))),
 	send(Controls, append, new(ToX,text_item('X:'))),
 	send(Controls, append, new(ToY,text_item('Y:'))),
 	send(Controls, append, button('Bestaetigen',message(@prolog, process_move_unit, FromX, FromY, ToX, ToY, Controls))),
@@ -288,11 +284,10 @@ show_controls(D) :-
 
 
 update_controls :-
-	game_window(D),
 	game_control(Controls),
 	send(Controls, free),
 	abolish(game_control/1),
-	show_controls(D).
+	show_controls.
 
 process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
 	game_control(Controls),
@@ -312,7 +307,6 @@ process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
 	spielfeld.
 
 process_end_turn :-
-	game_control(Controls),
 	end_turn,
 	update_controls,
 	spielfeld.
@@ -325,7 +319,7 @@ game_over_gui(Winner) :-
 	new(B, bitmap(I)),
 	send(G, display, B),
 	atomic_list_concat(['Player ', Winner, ' wins!'], String_result),
-	send(G, append, new(Label, label(name, String_result))),
+	send(G, append, new(_, label(name, String_result))),
 	send(G, open),
 	send(C, destroy),
 	send(D, destroy).
@@ -339,10 +333,10 @@ test_change :-
 	send(T, border, 1),
 	send(T, cell_spacing, -1),
 	send(T, rules, all),
-	send(T, append, new(Cell, table_cell(text('hi')))),
-	send(T, append, new(Cell2, table_cell(text('hi2')))),
-	send(T, append, new(Cell3, table_cell(text('hi')))),
-	send(T, append, new(Cell4, table_cell(text('hi2')))),
+	send(T, append, new(_, table_cell(text('hi')))),
+	send(T, append, new(_, table_cell(text('hi2')))),
+	send(T, append, new(_, table_cell(text('hi')))),
+	send(T, append, new(_, table_cell(text('hi2')))),
 	get(T, cell, 1,1, Cell5 ),
 	send(Cell5, selection, 'haha'),
 	%send(Cell5, free),
