@@ -270,6 +270,7 @@ show_controls(D) :-
 	player_tokens(Player, Tokens),
 	string_concat('Aktiv: Spieler ', Player, String_active_player),
 	string_concat('Tokens: ', Tokens, String_tokens),
+
 	% die Bausteine zur Steuerung
 	send(Controls, append, new(Label1, label(name, String_active_player))),
 	send(Controls, append, new(Label4, label(name, String_tokens))),
@@ -281,7 +282,7 @@ show_controls(D) :-
 	send(Controls, append, new(ToY,text_item('Y:'))),
 	send(Controls, append, button('Bestaetigen',message(@prolog, process_move_unit, FromX, FromY, ToX, ToY, Controls))),
 	send(Controls, append, button('Zug Beenden',message(@prolog, process_end_turn))),
-	%send(D, left, Controls),
+	
 	send(Controls, open),
 	assert(game_control(Controls)).
 
@@ -315,6 +316,20 @@ process_end_turn :-
 	end_turn,
 	update_controls,
 	spielfeld.
+
+game_over_gui(Winner) :-
+	game_control(C),
+	game_window(D),
+	new(G, dialog('Winner')),
+	new(I, image('win.jpg')),
+	new(B, bitmap(I)),
+	send(G, display, B),
+	atomic_list_concat(['Player ', Winner, ' wins!'], String_result),
+	send(G, append, new(Label, label(name, String_result))),
+	send(G, open),
+	send(C, destroy),
+	send(D, destroy).
+
 
 %TODO delete
 test_change :-

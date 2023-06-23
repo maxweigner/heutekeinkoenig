@@ -183,14 +183,17 @@ game_over(Winner) :-
 	).
 
 
+
 % Falls das Spiel vorbei ist, mach nix
 end_turn :-
 	game_over(Winner),
+	game_over_gui(Winner),
 	write("Game Over!"), nl,
 
 	write("Player "),
 	write(Winner), 
-	write(" wins!").
+	write(" wins!"),
+	reset_game.
 
 % Beendet den Aktuellen Zug des Spielers
 end_turn :-
