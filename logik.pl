@@ -10,11 +10,11 @@
 	assert( turn_action_points(2, 0) ).
 
 % Verhindern von "Unknown procedure" in last_turn
-:- 
-	assert( player_turn(1, -1, 0) ),
+:- % player_turn(Player,Turn,Tokens)
 	assert( player_turn(1,  0, 0) ),
-	assert( player_turn(2, -1, 0) ),
-	assert( player_turn(2,  0, 0) ).
+	assert( player_turn(1, -1, 0) ),
+	assert( player_turn(2,  0, 0) ),
+	assert( player_turn(2, -1, 0) ).
 
 % Verändern der Player Tokens hierüber
 change_player_tokens(TokensNew) :-
@@ -205,14 +205,14 @@ end_turn :-
 	change_player_tokens(Tcalc),
 
 	% Den Spieler wechseln
-	change_player.
+	change_player,!.
 
 
 % Gibt aus der wie vielte Turn der höchste gespeicherte ist
 % für den aktuellen Spieler
 last_turn(Turn) :-
 	current_player(Player),
-	findall(X, player_turn(Player,_,X), Turns),
+	findall(X, player_turn(Player,X,_), Turns),
 	max_member(Turn, Turns).
 
 last_turn(Turn) :-
