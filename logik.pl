@@ -225,16 +225,15 @@ calc_tokens(Tokens) :-
 	% Aktuellen Spieler herausfinden
 	current_player(Player),
 
-	% Tokens die Pro Runde dazukommen hinzufügen
-	player_tokens(Player, Tcurrent),
+	% Tokens die Pro Runde dazukommen herausfinden
 	player_tokens_per_turn(Player,Tturn),
 
-	Tadd is Tcurrent + Tturn,
-
-	% Tokens aus der vorletzten Runde entfernen
+	% Tokens aus der letzten und vorletzten Runde holen
 	last_turn(LastTurn),
 	PreLastTurn is LastTurn - 1,
+
+	player_turn(Player, LastTurn, Tlast)
 	player_turn(Player, PreLastTurn, Tprelast),
 
 	% Neue Anzahl der Tokens ausgeben
-	Tokens is Tadd - Tprelast.
+	Tokens is Tlast + Tturn - Tprelast.
