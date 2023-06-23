@@ -11,7 +11,7 @@ feldType(water, 3, blue).
 % einheit(type, attack, defense, action multiplier, upkeep, symbol)
 % der multiplier ist der angewandte faktor für boni/mali
 einheit(infantry, 2, 2, 2, 1, i).
-einheit(robot, 3, 1, 3, 1, s).
+einheit(robot, 3, 1, 3, 1, r).
 einheit(motorized, 4, 3, 2, 2, m).
 einheit(tank, 5, 5, 3, 2, t).
 
