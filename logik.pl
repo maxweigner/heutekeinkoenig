@@ -43,6 +43,14 @@ betrag(In, Out) :-
 	).
 
 
+% Prüft ob Einheiten sich in angrenzenden feldern befinden
+einheit_attackable(X1, Y1, X2, Y2) :-
+	betrag(X1 - X2, Xd),
+	betrag(Y1 - Y2, Yd),
+	Distance is Xd + Yd,
+	Distance < 2.
+
+
 % Bewegt die Einheit des aktuellen Spielers an position Xold, Yold 
 % auf position Xnew, Ynew
 einheit_move(Xold, Yold, Xnew, Ynew) :-
@@ -76,6 +84,9 @@ einheit_move(Xold, Yold, Xnew, Ynew) :-
 % Die Einheit des aktuellen Spielers auf Xattack, Yattack
 % greift die Einheit des anderen auf Xdefend, Ydefend an
 einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
+	%Prüfen ob die Einheit angegriffen werden kann
+	einheit_attackable(Xattack, Yattack, Xdefend, Ydefend),
+
 	% Player token abziehen für den angriff-move
 	% Falls nix übrig wird der angriff abgebrochen da false
 	change_player_tokens_decrement,
