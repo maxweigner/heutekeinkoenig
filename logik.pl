@@ -174,13 +174,13 @@ change_player :-
 game_over(Winner) :-
 	(
 		current_player(Winner),
-		inactive_player(Loser),
-		\+ einheit_active(Loser,_,_,_,_),
-		!
-		;
+		\+ einheit_active(Winner,_,_,_,_)
+	), !;
+	(
 		inactive_player(Winner),
-		!
+		\+ einheit_active(Winner,_,_,_,_)
 	).
+
 
 
 % Falls das Spiel vorbei ist, mach nix
@@ -191,7 +191,8 @@ end_turn :-
 
 	write("Player "),
 	write(Winner), 
-	write(" wins!").
+	write(" wins!"),
+	reset_game.
 
 % Beendet den Aktuellen Zug des Spielers
 end_turn :-
