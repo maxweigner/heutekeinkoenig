@@ -232,7 +232,7 @@ calc_tokens(Tokens) :-
 	last_turn(LastTurn),
 	PreLastTurn is LastTurn - 1,
 
-	player_turn(Player, LastTurn, Tlast)
+	player_turn(Player, LastTurn, Tlast),
 	player_turn(Player, PreLastTurn, Tprelast),
 
 	% Neue Anzahl der Tokens ausgeben
