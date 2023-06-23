@@ -280,6 +280,7 @@ show_controls(D) :-
 	send(Controls, append, new(ToX,text_item('X:'))),
 	send(Controls, append, new(ToY,text_item('Y:'))),
 	send(Controls, append, button('Bestaetigen',message(@prolog, process_move_unit, FromX, FromY, ToX, ToY, Controls))),
+	send(Controls, append, button('Zug Beenden',message(@prolog, process_end_turn))),
 	%send(D, left, Controls),
 	send(Controls, open),
 	assert(game_control(Controls)).
@@ -306,6 +307,12 @@ process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
 	atom_number(TY, TY2),
 
 	einheit_action(FX2, FY2, TX2, TY2),
+	update_controls,
+	spielfeld.
+
+process_end_turn :-
+	game_control(Controls),
+	end_turn,
 	update_controls,
 	spielfeld.
 
