@@ -5,6 +5,26 @@ debug_init :-
 	init_player2(infantry,infantry,infantry),
 	init_feld1.
 
+debug_calc(Type, Loops) :-
+	debug_init,
+	debug_run(Type, Loops-1),!.
+
+debug_run(1, Loops) :-
+	Loops > 0,
+	player_tokens(Player, Tokens),
+	write(Tokens), nl,
+	end_turn, end_turn,
+	debug_run(1, Loops-1).
+
+% default case
+debug_run(1, Loops) :-
+	player_tokens(Player, Tokens),
+	write(Tokens).
+
+debug_run(2, Loops) :-
+	einheit_action(0,0,1,1),
+	debug_run(1, Loops).
+
 print_info(Type,X,Y,HP) :-
 	write("-------"),nl,
 	write("Type: "),

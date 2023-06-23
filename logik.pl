@@ -32,14 +32,14 @@ change_player_tokens_decrement :-
 
 
 % Gibt den Betrag der Zahl zurück
-betrag(Num1, Num2) :-
+betrag(In, Out) :-
 	(
-		Num1 >= 0,
-		Num2 is Num1
+		In >= 0,
+		Out is In
 	), !
 	;
 	(
-		Num2 is -Num1
+		Out is -In
 	).
 
 
@@ -172,13 +172,14 @@ change_player :-
 % game_over ist true wenn das game over ist - surprise surprise
 % Gibt den Gewinner zurück
 game_over(Winner) :-
+	current_player(Active),
+	inactive_player(Inactive),
 	(
-		current_player(Winner),
-		\+ einheit_active(Winner,_,_,_,_)
-	), !;
-	(
-		inactive_player(Winner),
-		\+ einheit_active(Winner,_,_,_,_)
+		\+ einheit_active(Inactive,_,_,_,_),
+		Winner is Active, !
+		;
+		\+ einheit_active(Active,_,_,_,_),
+		Winner is Inactive
 	).
 
 
@@ -226,14 +227,19 @@ calc_tokens(Tokens) :-
 	current_player(Player),
 
 	% Tokens die Pro Runde dazukommen herausfinden
-	player_tokens_per_turn(Player,Tturn),
+	player_tokens_per_turn(Player, Tbase),
 
-	% Tokens aus der letzten und vorletzten Runde holen
+	% Tokens aus der letzten (aktuellen) und vorletzten Runde holen
 	last_turn(LastTurn),
 	PreLastTurn is LastTurn - 1,
-
-	player_turn(Player, LastTurn, Tlast),
+	player_turn(Player, LastTurn,    Tlast),
 	player_turn(Player, PreLastTurn, Tprelast),
 
-	% Neue Anzahl der Tokens ausgeben
-	Tokens is Tlast + Tturn - Tprelast.
+	% Neue Anzahl der Tokens berechnen
+	(
+		Tlast > Tbase,
+		Tokens is 2 * Tbase, !
+		;
+		Tokens is Tlast + Tbase
+	).
+
