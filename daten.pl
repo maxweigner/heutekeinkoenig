@@ -27,6 +27,10 @@ player_tokens(10).
 % Der Turncounter
 turn_counter(1).
 
+% Textfarbe Spieler
+player_color(1, black).
+player_color(2, white).
+
 % Erschafft ein festes Spielfeld
 init_feld1 :-
 	% feld(X, Y, Type)

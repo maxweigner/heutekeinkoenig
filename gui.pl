@@ -160,31 +160,31 @@ spielfeld :-
 	get_color_of_fieldType(Y, Yc),
 
 	% Einheiten Symbole fetchen.
-	unit_symbol_at_cell(0, 0, As),
-	unit_symbol_at_cell(0, 1, Bs),
-	unit_symbol_at_cell(0, 2, Cs),
-	unit_symbol_at_cell(0, 3, Ds),
-	unit_symbol_at_cell(0, 4, Es),
-	unit_symbol_at_cell(1, 0, Fs),
-	unit_symbol_at_cell(1, 1, Gs),
-	unit_symbol_at_cell(1, 2, Hs),
-	unit_symbol_at_cell(1, 3, Is),
-	unit_symbol_at_cell(1, 4, Js),
-	unit_symbol_at_cell(2, 0, Ks),
-	unit_symbol_at_cell(2, 1, Ls),
-	unit_symbol_at_cell(2, 2, Ms),
-	unit_symbol_at_cell(2, 3, Ns),
-	unit_symbol_at_cell(2, 4, Os),
-	unit_symbol_at_cell(3, 0, Pxs),
-	unit_symbol_at_cell(3, 1, Qs),
-	unit_symbol_at_cell(3, 2, Rs),
-	unit_symbol_at_cell(3, 3, Ss),
-	unit_symbol_at_cell(3, 4, Txs),
-	unit_symbol_at_cell(4, 0, Us),
-	unit_symbol_at_cell(4, 1, Vs),
-	unit_symbol_at_cell(4, 2, Ws),
-	unit_symbol_at_cell(4, 3, Xs),
-	unit_symbol_at_cell(4, 4, Ys),
+	unit_symbol_at_cell(0, 0, As,  Color1),
+	unit_symbol_at_cell(0, 1, Bs,  Color2),
+	unit_symbol_at_cell(0, 2, Cs,  Color3),
+	unit_symbol_at_cell(0, 3, Ds,  Color4),
+	unit_symbol_at_cell(0, 4, Es,  Color5),
+	unit_symbol_at_cell(1, 0, Fs,  Color6),
+	unit_symbol_at_cell(1, 1, Gs,  Color7),
+	unit_symbol_at_cell(1, 2, Hs,  Color8),
+	unit_symbol_at_cell(1, 3, Is,  Color9),
+	unit_symbol_at_cell(1, 4, Js,  Color10),
+	unit_symbol_at_cell(2, 0, Ks,  Color11),
+	unit_symbol_at_cell(2, 1, Ls,  Color12),
+	unit_symbol_at_cell(2, 2, Ms,  Color13),
+	unit_symbol_at_cell(2, 3, Ns,  Color14),
+	unit_symbol_at_cell(2, 4, Os,  Color15),
+	unit_symbol_at_cell(3, 0, Pxs, Color16),
+	unit_symbol_at_cell(3, 1, Qs,  Color17),
+	unit_symbol_at_cell(3, 2, Rs,  Color18),
+	unit_symbol_at_cell(3, 3, Ss,  Color19),
+	unit_symbol_at_cell(3, 4, Txs, Color20),
+	unit_symbol_at_cell(4, 0, Us,  Color21),
+	unit_symbol_at_cell(4, 1, Vs,  Color22),
+	unit_symbol_at_cell(4, 2, Ws,  Color23),
+	unit_symbol_at_cell(4, 3, Xs,  Color24),
+	unit_symbol_at_cell(4, 4, Ys,  Color25),
 
 	% Zellen hinzufügen
 	send_list(T, 
@@ -199,47 +199,47 @@ spielfeld :-
 			next_row,
 
 			append(0, bold, center),
-			append(As, bold, center, center, 1, 1, Ac),
-			append(Bs, bold, center, center, 1, 1, Bc),
-			append(Cs, bold, center, center, 1, 1, Cc),
-			append(Ds, bold, center, center, 1, 1, Dc),
-			append(Es, bold, center, center, 1, 1, Ec),
+			append(As, bold, center, center, 1, 1, Ac, Color1),
+			append(Bs, bold, center, center, 1, 1, Bc, Color2),
+			append(Cs, bold, center, center, 1, 1, Cc, Color3),
+			append(Ds, bold, center, center, 1, 1, Dc, Color4),
+			append(Es, bold, center, center, 1, 1, Ec, Color5),
 
 			next_row,
 
 			append(1, bold, center),
-			append(Fs, bold, center, center, 1, 1, Fc),
-			append(Gs, bold, center, center, 1, 1, Gc),
-			append(Hs, bold, center, center, 1, 1, Hc),
-			append(Is, bold, center, center, 1, 1, Ic),
-			append(Js, bold, center, center, 1, 1, Jc),
+			append(Fs, bold, center, center, 1, 1, Fc, Color6),
+			append(Gs, bold, center, center, 1, 1, Gc, Color7),
+			append(Hs, bold, center, center, 1, 1, Hc, Color8),
+			append(Is, bold, center, center, 1, 1, Ic, Color9),
+			append(Js, bold, center, center, 1, 1, Jc, Color10),
 
 			next_row,
 
 			append(2, bold, center),
-			append(Ks, bold, center, center, 1, 1, Kc),
-			append(Ls, bold, center, center, 1, 1, Lc),
-			append(Ms, bold, center, center, 1, 1, Mc),
-			append(Ns, bold, center, center, 1, 1, Nc),
-			append(Os, bold, center, center, 1, 1, Oc),
+			append(Ks, bold, center, center, 1, 1, Kc, Color11),
+			append(Ls, bold, center, center, 1, 1, Lc, Color12),
+			append(Ms, bold, center, center, 1, 1, Mc, Color13),
+			append(Ns, bold, center, center, 1, 1, Nc, Color14),
+			append(Os, bold, center, center, 1, 1, Oc, Color15),
 
 			next_row,
 
 			append(3, bold, center),
-			append(Pxs, bold, center, center, 1, 1,Pxc),
-			append(Qs, bold, center, center, 1, 1, Qc),
-			append(Rs, bold, center, center, 1, 1, Rc),
-			append(Ss, bold, center, center, 1, 1, Sc),
-			append(Txs, bold, center, center, 1, 1,Txc),
+			append(Pxs, bold, center, center, 1, 1,Pxc, Color16),
+			append(Qs, bold, center, center, 1, 1, Qc, 	Color17),
+			append(Rs, bold, center, center, 1, 1, Rc, 	Color18),
+			append(Ss, bold, center, center, 1, 1, Sc, 	Color19),
+			append(Txs, bold, center, center, 1, 1,Txc, Color20),
 
 			next_row,
 
 			append(4, bold, center),
-			append(Us, bold, center, center, 1, 1, Uc),
-			append(Vs, bold, center, center, 1, 1, Vc),
-			append(Ws, bold, center, center, 1, 1, Wc),
-			append(Xs, bold, center, center, 1, 1, Xc),
-			append(Ys, bold, center, center, 1, 1, Yc)
+			append(Us, bold, center, center, 1, 1, Uc, Color21),
+			append(Vs, bold, center, center, 1, 1, Vc, Color22),
+			append(Ws, bold, center, center, 1, 1, Wc, Color23),
+			append(Xs, bold, center, center, 1, 1, Xc, Color24),
+			append(Ys, bold, center, center, 1, 1, Yc, Color25)
 
 
 		]).
@@ -247,14 +247,17 @@ spielfeld :-
 	% Einheiten setzen
 	
 
-unit_symbol_at_cell(Row, Col, Symbol) :-
+unit_symbol_at_cell(Row, Col, Symbol, Color) :-
 	(
-		\+ einheit_active(_, Type, Row, Col,_),
+		\+ einheit_active(Player, Type, Row, Col,_),
 		!,
-		Symbol = ''
+		Symbol = '',
+		Color = black
 	;
-		einheit_active(_, Type, Row, Col,_),
-		einheit(Type,_,_,_,_,Symbol)
+		einheit_active(Player, Type, Row, Col,_),
+		einheit(Type,_,_,_,_,Symbol),
+		player_color(Player, Color),
+		!
 	).
 
 
