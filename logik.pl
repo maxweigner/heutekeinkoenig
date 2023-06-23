@@ -115,8 +115,15 @@ einheit_action(Xold, Yold, Xnew, Ynew) :-
 		einheit_attack(Xold, Yold, Xnew, Ynew)
 	),
 
-	end_turn,!.
-
+	(
+		current_player(Player),
+		player_tokens(Player, Tokens),
+		\+ Tokens > 0,
+		end_turn, 
+		!
+		;
+		true
+	).
 
 einheit_alive(AP, HP, HPnew, HPmult) :-
 	% berechnen der differenz nach anwenden des multplikators

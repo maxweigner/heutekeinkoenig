@@ -63,6 +63,7 @@ choose_units :-
 
 	send(D, open).
 
+%TODO delete
 change_cell_content(T, Row, Col, NewContent) :- 
 	get(T, cell, Row, Col, Cell),
 	send(Cell, free),
@@ -305,6 +306,7 @@ process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
 	update_controls,
 	spielfeld.
 
+%TODO delete
 test_change :-
 	new(D, dialog),
 	new(T, tabular),
