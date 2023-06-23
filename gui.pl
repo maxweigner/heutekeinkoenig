@@ -4,7 +4,7 @@
 % new(@specifier, dialog('windowname'))
 % send(@specifiert, append(text_item(name)))
 
-window :-
+heutekeinkoenig :-
 	new(D, dialog("Game")),
 	openingscreen(D),
 	show_image(D),
