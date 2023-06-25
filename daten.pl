@@ -48,7 +48,7 @@ player_color(2, white).
 % Erschafft ein festes Spielfeld
 init_feld1 :-
 	% feld(X, Y, Type)
-	assert( feld(0, 0, 1) ),
+	assert( feld(0, 0, 2) ),
 	assert( feld(0, 1, 2) ),
 	assert( feld(0, 2, 1) ),
 	assert( feld(0, 3, 1) ),
@@ -57,26 +57,26 @@ init_feld1 :-
 	assert( feld(1, 0, 1) ),
 	assert( feld(1, 1, 1) ),
 	assert( feld(1, 2, 1) ),
-	assert( feld(1, 3, 1) ),
-	assert( feld(1, 4, 1) ),
+	assert( feld(1, 3, 3) ),
+	assert( feld(1, 4, 3) ),
 
 	assert( feld(2, 0, 1) ),
-	assert( feld(2, 1, 1) ),
+	assert( feld(2, 1, 2) ),
 	assert( feld(2, 2, 3) ),
 	assert( feld(2, 3, 3) ),
 	assert( feld(2, 4, 1) ),
 
 	assert( feld(3, 0, 1) ),
-	assert( feld(3, 1, 1) ),
-	assert( feld(3, 2, 1) ),
-	assert( feld(3, 3, 3) ),
+	assert( feld(3, 1, 3) ),
+	assert( feld(3, 2, 2) ),
+	assert( feld(3, 3, 2) ),
 	assert( feld(3, 4, 1) ),
 
-	assert( feld(4, 0, 1) ),
-	assert( feld(4, 1, 1) ),
+	assert( feld(4, 0, 3) ),
+	assert( feld(4, 1, 3) ),
 	assert( feld(4, 2, 1) ),
 	assert( feld(4, 3, 1) ),
-	assert( feld(4, 4, 3) ).
+	assert( feld(4, 4, 1) ).
 
 
 % Setzt das Spielfeld sowie die zugewiesenen einheiten zurück
@@ -141,9 +141,9 @@ print_info(Type,X,Y,HP) :-
 
 print_unit(X,Y) :-
 	write("X/Y: "),
-	write(X),
+	write(Y),
 	write(":"),
-	write(Y).
+	write(X).
 
 print_player(Player) :-
 	write("## Player "),
@@ -159,6 +159,7 @@ print_player(Player) :-
 	write(T).
 
 print_player1 :-
+	nl,
 	print_player(1).
 
 print_player2 :-

@@ -309,11 +309,13 @@ process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
 	),
 
 	update_controls,
+	info_all,
 	spielfeld.
 
 process_end_turn :-
 	end_turn,
 	update_controls,
+	info_all,
 	spielfeld.
 
 game_over_gui(Winner) :-
