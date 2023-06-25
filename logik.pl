@@ -96,6 +96,9 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 	einheit_active(Player, TypeAttack, Xattack, Yattack, _),
 	einheit_active(PlayerDefend, TypeDefend, Xdefend, Ydefend, HP),
 
+	% Friendly Fire verhindern
+	\+ Player = PlayerDefend,
+
 	% Info für Einheiten-Typen abrufen
 	einheit(TypeAttack, AP, _, _, _, _),
 	einheit(TypeDefend, _, _, MultDef, _, _),
@@ -128,6 +131,10 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 % Lässt eine Einheit bewegen, oder wenn der Platz schon belegt ist, angreifen
 % Der Zug wird danach automatisch beendet
 einheit_action(Xold, Yold, Xnew, Ynew) :-
+	% Sicher gehen, dass nichts out of bounds geht
+	Xnew > -1, Xnew < 5,
+	Ynew > -1, Ynew < 5,
+	
 	( % Bewege Einheit oder greife damit an, falls möglich
 		einheit_move(Yold, Xold, Ynew, Xnew),
 		!;
