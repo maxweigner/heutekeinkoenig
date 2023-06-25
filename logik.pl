@@ -2,7 +2,7 @@
 
 % Der aktuelle Spieler wird hiermit gesetzt damit das später
 % nicht bei jedem Aufruf angegeben werden muss
-:- assert( current_player(1) ). % das muss so weil sonst err
+:- assert( current_player(1) ).
 
 % Damit vorherige action points (=0) auch in der ersten Runde exisiteren, sonst err
 :- 
@@ -100,10 +100,18 @@ einheit_attack(Xattack, Yattack, Xdefend, Ydefend) :-
 	einheit(TypeAttack, AP, _, _, _, _),
 	einheit(TypeDefend, _, _, MultDef, _, _),
 
+	% Mutliplikator für Angriff ermitteln
+	feld(Xattack, Yattack, Von),
+	feld(Xdefend, Ydefend, Nach),
+	feldMultiplier(Von, Nach, MultAP),
+
+	% Finale AP berechnen
+	APmitMult is AP * MultAP,
+
 	% Den Kampf durchführen
 	(
 		(% Entweder die Einheit überlebt
-			einheit_alive(AP, HP, HPnew, MultDef),
+			einheit_alive(APmitMult, HP, HPnew, MultDef),
 			retract( einheit_active(PlayerDefend, TypeDefend, 
 										Xdefend, Ydefend, HP) ),
 			assert( einheit_active(PlayerDefend, TypeDefend, 

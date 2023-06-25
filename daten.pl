@@ -8,6 +8,20 @@ feldType(grass, 1, green).
 feldType(mountain, 2, grey).
 feldType(water, 3, blue).
 
+% Terrain-Multiplier für Attack
+% feldMultiplier(von, nach, mult)
+feldMultiplier(1, 1, 1.0).
+feldMultiplier(1, 2, 0.5).
+feldMultiplier(1, 3, 1.5).
+
+feldMultiplier(2, 1, 1.5).
+feldMultiplier(2, 2, 1.0).
+feldMultiplier(2, 3, 0.5).
+
+feldMultiplier(3, 1, 1.5).
+feldMultiplier(3, 2, 0.5).
+feldMultiplier(3, 3, 1.0).
+
 % einheit(type, attack, defense, action multiplier, upkeep, symbol)
 % der multiplier ist der angewandte faktor für boni/mali
 einheit(infantry, 2, 2, 2, 1, i).
@@ -112,3 +126,51 @@ init_player2(Type1, Type2, Type3) :-
 	assert( einheit_active(Player,Type1,4,4,Defense_Points1) ),
 	assert( einheit_active(Player,Type2,4,3,Defense_Points2) ),
 	assert( einheit_active(Player,Type3,3,4,Defense_Points3) ).
+
+
+% Zur Ausgabe von Infos, falls die Spieler das benötigen
+print_info(Type,X,Y,HP) :-
+	write("-------"),nl,
+	write("Type: "),
+	write(Type), nl,
+
+	print_unit(X,Y), nl,
+
+	write("HP: "),
+	write(HP),nl.
+
+print_unit(X,Y) :-
+	write("X/Y: "),
+	write(X),
+	write(":"),
+	write(Y).
+
+print_player(Player) :-
+	write("## Player "),
+	write(Player),
+	write(" ##"), nl,
+	forall(einheit_active(Player,Type,X,Y,HP), 
+		print_info(Type,X,Y,HP)),
+
+	write("-------"), nl,
+
+	write("Tokens: "),
+	player_tokens(Player,T),
+	write(T).
+
+print_player1 :-
+	print_player(1).
+
+print_player2 :-
+	print_player(2).
+
+% Gibt Infos für den aktuellen Spieler aus
+info :-
+	current_player(Player),
+	print_player(Player).
+
+% Gibt Infos für beide Spieler aus
+info_all :-
+	print_player1,
+	nl, nl, write("=========="), nl, nl,
+	print_player2.
