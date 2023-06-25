@@ -302,7 +302,12 @@ process_move_unit(FromX, FromY, ToX, ToY, Controls) :-
 	atom_number(TX, TX2),
 	atom_number(TY, TY2),
 
-	einheit_action(FX2, FY2, TX2, TY2),
+	(% Abfangen, dass ein Zug ungültig ist
+		einheit_action(FX2, FY2, TX2, TY2)
+		;
+		true
+	),
+
 	update_controls,
 	spielfeld.
 
