@@ -27,7 +27,7 @@ feldMultiplier(3, 3, 1.0).
 einheit(infantry, 2, 2, 2, 1, i).
 einheit(robot, 3, 1, 3, 1, r).
 einheit(motorized, 4, 3, 2, 2, m).
-einheit(tank, 5, 5, 3, 2, t).
+einheit(tank, 5, 5, 3, 3, t).
 
 % Startpositionen der Spieler mit jeweils -1 auf die coords
 % Damit ist die init_player universell
