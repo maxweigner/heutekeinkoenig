@@ -27,11 +27,11 @@ Falls $HP_{new}\leq0$ dann überlebt die angegriffene Einheit nicht.
 
 ## Einheiten
 Es gibt vier verschiedene Einheiten mit jeweils verschiedenen Eigenschaften:
-![[Pasted image 20230625120011.png|700]]
+![](Einheiten.png)
 
 ## Terrains
 Bei Angriffen wird abhängig vom Terrain bei Ursprung und Ziel des Angriffs ein Multiplikator auf die Angriffspunkte angewandt wie folgt:
-![[Pasted image 20230625112811.png|500]]
+![](Terrains.png)
 
 ## Tokens
 Der Basis-Tokenwert beträgt 8. Von diesem Wert werden die Kosten der Einheiten abgezogen. Der sich daraus ergebende Wert wird dem Spieler pro Runde gut geschrieben.
