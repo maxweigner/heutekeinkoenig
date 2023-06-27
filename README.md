@@ -21,7 +21,7 @@ Angriffe $\Rightarrow$ Jeweils ein Token
 Angriffspunkte $AP$ und deren Angriffsmultiplikator $AP_{mult}$
 Lebenspunkte  $HP$ und deren Verteidigungsmultiplikator $HP_{mult}$
 
-Die neuen Lebenspunkte der Einheit sind $HP_{new} = HP * ( (HP*HP_{mult}-(AP*AP_{mult})) / (HP*HP_{mult}) )$
+Die neuen Lebenspunkte der Einheit sind $HP_{new}=HP*((HP*HP_{mult}-(AP*AP_{mult}))/(HP*HP_{mult}))$
 
 Falls $HP_{new}\leq0$ dann überlebt die angegriffene Einheit nicht.
 
